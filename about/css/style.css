@@ -58,14 +58,15 @@ a:hover {
 
 /* styles for the index page */
 .index-page {
-  background-image: url(../img/2.png);
+  background-image: url(../img/8.png);
   background-size: cover;
-  height: auto;
+  height: 768px;
 }
 .basic-info {
   position: absolute;
   right: 20px;
-  color: #555;
+  /*color: #A3ADC3;*/
+  color: #97A9C1;
   text-align: right;
   font-family: 'Vollkorn', serif;
 }
