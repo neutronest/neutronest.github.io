@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!-- modified from pluskid's blog -->
+<!-- thanks pluskid.. -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Neutronest</title>
+    <meta name="author" content="Chaos ">
+    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
+    <!-- Mobile Specific Metas
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <!-- Google webfonts is almost not accessible from China, so we host locally -->
+    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
+    <!-- CSS
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css"> 
+    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="/css/customize.css">    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+
+<body>
+    <div class="page-header container">
+        <ul class="nav-left">
+            <li class="home"><a href="/about/about.html">λ neutronest . </a></li>
+            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
+            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
+            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
+            <li class="desktop-only"><a href="/archives">Archives</a></li>
+            <li class="desktop-only"><a href="">Resume</a></li>
+            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
+        </ul>
+
+        <ul class="nav-right">
+            <li><a href="">Github</a></li>
+            <li><a href="">Linkedin</a></li>
+            <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+
+        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
+    </div>
+
+<!-- section: index  -->
+
+<div class="container">
+    <div class="separator"></div>
+    <div class="top_words">
+        <p> 欢迎来到 neutronest 的小站。这里记录了一些关于 程式语言应用 以及 机器学习等相关技术的文章(TECH BLOGS)。同时也包括一些生活，感想随笔 (ARTICLES)。如果你对深度学习，机器学习理论，函数式编程，形式语义等内容感兴趣，这里可能会有部分文章会对您有益（并没有 
+
+        </p>
+    </div>
+</div>
+
+
+    <div class="post-container">
+        <div class="post-content">
+            <div class="post-header">
+                <h2 class="title">
+                    <a href="/2014/01/23/2014-01-23-storm-0-dot-9-0-dot-1ban-huan-jing-da-jian/">storm 0.9.0.1版 简析</a>
+                </h2>
+                <span>
+                    <div class="post-meta">
+    <span><img src="/img/icon-calendar.svg" width="12px"> 2014-01-23</span>
+
+    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    
+</div>
+
+                </span>
+                <p align="left">
+                    
+
+                        今天终于有空闲时间了，赶紧把Storm环境的搭建流程以及项目部署mark一下以备忘。
+
+
+Storm是啥？Storm 是Twitter开源出来的一个分布式实时数据流处理系统。Storm使得处理“源源不停的”流式数据变得容易、可靠而有保障（吹吧）。与Hadoop的批量处理数据相比，Storm更倾向于RealTime(实时性)的数据处理。
+Storm本身是用based on JVM的函数式语言Clojure开发的。 函数式语言由于其特性天生支持并发和模块化，所以个人感觉写这种分布式、并行处理的程序十分合适。而且， 虽然Storm是跑在JVM上的，但是Storm本身依赖了Thrift 数据接口，因此我们可以用任何语言实现其接口。
+我们为什么需要Storm? 难道现有的Hadoop生态系统(HDFS-HIVE-HBASE-MAPREDUCE-PIG)不能满足我们的要求？考虑如下几个应用场景： 实时
+
+                    
+                </p>
+
+                
+                    <div class="read-more">
+                        <a href="/2014/01/23/2014-01-23-storm-0-dot-9-0-dot-1ban-huan-jing-da-jian/" class="btn">— read more —</a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="separator"></div>
+
+    <div class="post-container">
+        <div class="post-content">
+            <div class="post-header">
+                <h2 class="title">
+                    <a href="/2014/01/01/2014-01-01-hello-world/">Hello World</a>
+                </h2>
+                <span>
+                    <div class="post-meta">
+    <span><img src="/img/icon-calendar.svg" width="12px"> 2014-01-01</span>
+
+    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    
+</div>
+
+                </span>
+                <p align="left">
+                    
+
+                        Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+Quick StartCreate a new post1$ hexo new &#34;My New Post&#34;
+
+More info: Writing
+Run server1$ hexo server
+
+More info: Server
+Generate static files1$ hexo generate
+
+More info: Generating
+Deploy to remote sites1$ h
+
+                    
+                </p>
+
+                
+                    <div class="read-more">
+                        <a href="/2014/01/01/2014-01-01-hello-world/" class="btn">— read more —</a>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="separator"></div>
+
+<div class="index-pagination" role="pagination">
+    <a class="pull-left" href="/page/2/">← Newer Posts</a>
+    
+</div>
+<!-- end of section: index -->
+
+<div id="post-epilogue" class="container">
+    <div class="separator"></div>
+    <div class="archive-link">
+        <center><a href="/archives">— Blog Archives —</a></center>
+    </div>
+    <div class="separator"></div>
+</div>
+<div class="copyright">
+    Copyright © neutronest & Chiyuan Zhang 2012-2016 — Powered by Hexo
+</div>
+</body>
+</html>
+
