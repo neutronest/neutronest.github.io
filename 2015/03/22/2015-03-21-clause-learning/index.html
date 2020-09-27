@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!-- modified from pluskid's blog -->
+<!-- thanks pluskid.. -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Neutronest</title>
+    <meta name="author" content="Chaos ">
+    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
+    <!-- Mobile Specific Metas
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <!-- Google webfonts is almost not accessible from China, so we host locally -->
+    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
+    <!-- CSS
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css"> 
+    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="/css/customize.css">    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+
+<body>
+    <div class="page-header container">
+        <ul class="nav-left">
+            <li class="home"><a href="/about.html">λ neutronest . </a></li>
+            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
+            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
+            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
+            <li class="desktop-only"><a href="/archives">Archives</a></li>
+            <li class="desktop-only"><a href="">Resume</a></li>
+            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
+        </ul>
+
+        <ul class="nav-right">
+            <li><a href="">Github</a></li>
+            <li><a href="">Linkedin</a></li>
+            <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+
+        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
+    </div>
+
+
+<div class="post-container">
+    <div class="post-header">
+        <h2>关于Clause learning</h2>
+        <div class="post-meta">
+    <span><img src="/img/icon-calendar.svg" width="12px"> 2015-03-22</span>
+
+    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    
+</div>
+
+    </div>
+    <div class="post-content">
+        <h2 id="什么是-clause-learning"><a href="#什么是-clause-learning" class="headerlink" title="什么是 clause learning"></a>什么是 clause learning</h2><p>Clause learning 是我今天晚上从实验室回家的时候想到的一个对法律条文进行机器学习的一个学习模型。</p>
+<a id="more"></a>
+
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>今天下午在知乎看到一个关于法律的问题(“如果你拥有立法权，你会迫不及待的给中国增加一条怎样的法律”)，随手答了一下。当然这个事情本身和我的这个想法没有关系。只是这个问题让我想到诸如法律条文生成的滞后性等问题。而且最近在“回家的路上”这样的spare time, 我一直在苦苦构思一个科幻小说的设定，所以难免对这个问题产生些多余的思考。</p>
+<p>首先是，当今的法律体系，无论是大陆法系还是英美法系，都是通过明确的命题条文来构成法律本身的。法官通过犯人、律师、审判团等相关人的陈述和博弈，根据已有的法律条文集合给出一个最终的、综合的判决结果。这实际上可以抽象化一个“模式匹配”的过程，即：审判者通过犯罪者的行为 (action), 考量到它可能违反的法律种类 (laws, 我们用L表示这一集合)， 以及在每一种法律中违反的相关条文(我们可以用 $ L_{i,j} $ 表示， 其中i表示违反的第 i 种法律， j 表示第 i 种法律中的第 j 条), 同时考虑这个犯罪行为的“危害度量” (我们用 H_measure 来表示)，给出一个综合的判决结果也就是一个判决向量 (the judgement vector), 如</p>
+<p>$$ (“判处有期徒刑3年”, “剥夺政治权利终身”, “终身不许处境”) $$</p>
+<p>， 等。 我们用 Y 来表示最终的判决向量结果。</p>
+<p>我不知道目前的法律审判流程用这样的语句表达合不合理，但如果大概是这个样子的话，那我的工作就可以继续展开了。我个人认为，这样的审判体系其实是有缺陷的，主要在于法律条文的有限性以及滞后性。我在本文中只讨论有限性的问题。</p>
+<p>因为要做到”有法可依”，因此法律必须是人人可查，人人可鉴的，所以法律要以“条文”的严谨的方式存在。 然而，严谨的条文并不能对现实生活中复杂的案情关系进行充分信息表达。 比如，我们可以定义 “故意杀人者死”  这样的简单命题型的条文。 但是， 如果是 “被胁迫故意杀人者”呢， 是要判死刑还是无期徒刑？条文本身的依据是什么？ 所以考虑到这种情况，法律条文中会给出一个斡旋， 比如，（我只是打个比方真实的条文可能不是这样）， “被胁迫故意杀人者， 按情况从轻判罚， 严重者可执行死刑”。 那这里的“从轻”，“严重者”可就考验着各位法官们的执法艺术了。 法官要根据案情，结合实际情况给出个性化的判决。 正是因为这种不确定性， 才导致了诸如 “最高法院驳回地方法院判决，重新审理”这种判决结果不一致的情况。</p>
+<p>真是好笑， 明明法律条文本应是严格命题的， 那根据条文竟然还能出现判决结果不一致的情况， 奇哉怪哉。</p>
+<p>还有另一个缺陷，就是案情本身的复杂性确实太高了。 一个患抽搐症的人持刀报复，手一抖本来想捅肩膀结果捅到了心脏致人死亡，那给这名犯人如何量刑？毕竟， 法律条文中不可能出现“患抽搐症患者持刀失误致人死亡者从轻判决”这样拗口的设定。而且，你今天把这个写进法律了， 明天出现个拿斧头的抽搐症犯人， 后天再来个拿枪的抽搐者， 那这法律条文还加不加了？</p>
+<p>怎么办呢？有一种名为“判例法”的体系近似地解决了这个问题。已有的，案情类似的历史判决结果有法律效力。 大致意思是昨天怎么判类似的案件， 那么今天的案件还这么判。</p>
+<p>想到这个我笑了，以前怎么搞现在还这么搞， 你当是机器学习搞 training set 呢。</p>
+<p>对啊， 所以为什么不试试机器学习呢？</p>
+<h2 id="Origin-idea"><a href="#Origin-idea" class="headerlink" title="Origin idea"></a>Origin idea</h2><p>首先， 我想的是构成法律的条文不再是“固定”的了， 而是动态变化组成一个”模式库”(pattern library)，里面不再是单一的、孤立的命题集了， 而是庞大的形式语义库。法官不再照着法律条文进行模式匹配般的判罚了， 而是通过将已有的案情转化为形式化语义， 再赋予不同的特征函数输入到模式库中， 模式库会根据涉及到的语义子集，与法官输入的特征函数做combination, 最后输出一个判决向量作为结果。看似这样的流程与传统意义上的审判没有什么区别，只是把已有的法律条文语义化了而已。但其实关键就在于那个语义库。</p>
+<p>传统意义的法律条文可以抽象化为一个 N*M 的矩阵，其中N行代表法律种类的总和，M列代表每种法律所容纳的最大条文数。 这样就失去了灵活性和彼此之前的关联性。而形式化语义库可以是一个离散状态的模型， 比如深度神经网络的不同层，或者一个森林。 关键在于， 如果不再将法律条文看做是一个人人可手动查阅的有限刻板小集合，而是一个容纳无数种日常可能情况的特征图数据库， 那就可以大大减少判罚的不确定性和法官的工作量，同时提高判决的公正性。</p>
+<p>那么这个语义模型如何初始化呢？ 幸运的是我们可以获取到历史中大量的已有案件的判决。我们可以将这些历史数据也“形式化”，作为我们的初始训练集， 然后将法律语义库看做是一个模型来进行训练，这是 training 的过程。 当这个云语义库的百万级参数都被训练好后， 我们就真正意义上的获得一个包罗万象的， 有法可依的巨型语义库。</p>
+<p>然后对每一个案件， 我们同样将掌握的案情转化为形式化语义，输入到模型中， 模型会通过计算自动给出一个判决结果， 这是 inference 过程。</p>
+<p><strong><em>像这样的，以形式化语义为核心的， 以历史判决记录为训练集所训练出的法律判罚模型， 我把它定义为 clause learning model.</em></strong> 其中的 clause 为”条文”之意。</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>上述表示太抽象了， 本文给出一个具体的神经网络模型作为 example, 以及供 benchmark 使 的 baseline.</p>
+<p>Clause learning framework 的难点，一是在于如何将案情语义化， 而是如何设计合理的模型结构来存储庞大的语义集。在本文中， 我尝试使用神经网络的多个 hidden layer 来将已有法律条文的不同语素进行拆分，然后通过历史数据的学习将多种可能情况的组合权重存储在神经网络中。</p>
+<p><a href="http://s890.photobucket.com/user/neutronest/media/%202015-03-22%2012.20.49_zpsw9pn56mc.png.html" target="_blank"><img src="http://i890.photobucket.com/albums/ac103/neutronest/%202015-03-22%2012.20.49_zpsw9pn56mc.png" border="0" alt=" photo  2015-03-22 12.20.49_zpsw9pn56mc.png"/></a></p>
+<p>例：</p>
+<p>给出历史数据 [小张酒后驾车， 撞死人后肇事逃逸， 法院判处其5年有期徒刑，没收其驾驶执照，赔偿精神损失费5万元]。</p>
+<p>我们如何将这条训练集转化成形式化语义呢？ 我们可以将案件的维度分割成“结果现象、行为、动机、隐动机、隐关联事件”等，比如上述案件，我们可以将其形式化成：</p>
+<p>令</p>
+z_{0, i} = people-dead \\
+
+z_{1, j} = drive-drinking \\
+
+z_{2, k} = none \\
+
+z_{3, l} = none \\
+
+<p>…</p>
+<p>这样将每个拆分出的语素都构成一个神经层，而且遵循着由表到里的原则，从结果出发，然后逐步 forward 给出 隐含层的特征表示, 而且用 w 表示每个层节点的权重。图中的输入层由历史判例构成的训练数据集 $ X = \lbrace x_{1}, x_{2}, ..  \rbrace  $， 输出层为判决结果集 $ T = \lbrace t_{1}, t_{2}, .. \rbrace $  。</p>
+<p>然后从历史判例出发，依次将案例语料形式化解耦输入神经层中， 通过通过判例向量结果来调节各个层中的判决因子的参数。 这实际上就是深度神经网络的训练过程。 具体细节可以参考相关论文。</p>
+<p>然后最终， 我们就可以得到一个训练好的神经网络法律语义模型。 再有新的案例， 我们就可以直接按照语义规则输入网络， 然后 inference 出判罚结果， 省事省力。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>本文通过对历史判例语料的形式化表达，以及法律条文的模型转化，提出了 Clause learning framework, 尝试通过海量的判例数据以及机器学习方法解决现实中复杂的案件问题。其中，案件的复杂性可以通过形式化语义来通过海量的条规模型参数进行表达，来满足判决对现实生活复杂性的预测。</p>
+<p>但同时，本文并没有将Model的工作深入下去，而且就“如何进行形式化语义转换”这一问题也只是举了个简单例子， 并没有给出一个较好的答案。 比如，A杀B，与 A胁迫C杀B， 这种人与人之间的关系应如何表达， 也是亟待解决的问题。 同时， 将法律条文纳入深度网络，这一行为使得法律条规不再具有透明性，从此法律的判罚的合理性如何度量也是一个问题。 再者，本文提出并尝试解决了法律条文的有限性， 但并没有对“法律难以诠释新生事物”这滞后性提出好的解决方案。</p>
+<p>总之，如果clause learning 这个设想是科学的话， 那么非常期待后人的工作。</p>
+<p>（所以这样一本正经的口胡是什么鬼</p>
+<p>（（（</p>
+
+    </div>
+    <div class="post-epilogue container">
+        <div class="row">
+            
+                <div class="one-third column">
+                    <span>category</span>
+                    <div class="tag-list">
+                        
+                    </div>
+                </div>
+         
+        </div>
+    </div>
+    
+    <div class="comment-container container">
+        
+
+    </div>
+    
+</div>
+

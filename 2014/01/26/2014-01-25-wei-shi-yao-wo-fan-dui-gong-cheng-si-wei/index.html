@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- modified from pluskid's blog -->
+<!-- thanks pluskid.. -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Neutronest</title>
+    <meta name="author" content="Chaos ">
+    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
+    <!-- Mobile Specific Metas
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <!-- Google webfonts is almost not accessible from China, so we host locally -->
+    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
+    <!-- CSS
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css"> 
+    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="/css/customize.css">    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+
+<body>
+    <div class="page-header container">
+        <ul class="nav-left">
+            <li class="home"><a href="/about.html">λ neutronest . </a></li>
+            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
+            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
+            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
+            <li class="desktop-only"><a href="/archives">Archives</a></li>
+            <li class="desktop-only"><a href="">Resume</a></li>
+            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
+        </ul>
+
+        <ul class="nav-right">
+            <li><a href="">Github</a></li>
+            <li><a href="">Linkedin</a></li>
+            <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+
+        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
+    </div>
+
+
+<div class="post-container">
+    <div class="post-header">
+        <h2>为什么我反对“工程思维”</h2>
+        <div class="post-meta">
+    <span><img src="/img/icon-calendar.svg" width="12px"> 2014-01-26</span>
+
+    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    
+</div>
+
+    </div>
+    <div class="post-content">
+        <p> 我先解释一下什么叫做“所谓的工程思维”。</p>
+<p> 如果你以“码农一只”的设定出现，你的日常是“XX公司里的一名程序员或者架构师”。那么，你思考的东西与解决的矛盾往往会是这样的：</p>
+<p>“作为一名工程师，我写的代码是否完成了基本功能，做好了单元测试；是否达到了SLA的要求；今天我新增了XXX这个业务逻辑。这个服务是不是会对服务器CPU、memory带来高负载和庞大的数据压力；我是不是应该为自己的服务加一些监控，检验一下QPS、Latency、DB读写的走势，主库从库负载是否搭配合理。</p>
+<p>  我应如何妥善地与PM、SRE进行沟通和博弈，保证团队的项目稳健地向前推进。</p>
+<p>  我应如何将自己做的事情与个人发展协调统一起来。”</p>
+<p>  这样有什么问题吗？好像没有是吧。</p>
+<p>  直到我上人人、知乎和facebook的时候发现自己再也看不懂我曾经的小伙伴都在研究什么。</p>
+<p>   ==========================</p>
+<p>   我思考了很长时间，最后发现问题的根源可能在“技术是否就是技术还是为人和产品服务的工具”这个问题上。 之前所说的所有日常就是基于“我应如何将自己手中的技术转变为生产产品的生产力”（我艹 说的好绕）这一出发点，因此如果人的思维方式是这样的，那么长此以往，他就只会关心围绕着“产品”相关的技术和信息，然后其他看起来很trivial尤其是国外某些研究的领域和成果往往就不会加以关心。简单来说，就是看着“明显有用”的东西，我才会有去“尝试一下”的潜意识，否则就根本不去关心，将心里对新生事物的求知欲完全封死。</p>
+<p> 所以我一直认为所谓的“产品文化”和“工程师文化”其实是一码事。</p>
+<p>  举几个例子来说。之前人人上曾流传很广的“平面上任何一个多边形（可自交），不断取各边的中点重新连线，同时按比例放大，往复操作最终会趋近一个椭圆”这个问题。<a href="http://zhiqiang.org/blog/science/from-random-polygon-to-ellipse.html#205604-renren-1-88818-df944fcd07045780572c05da6bfe1373" target="_blank" rel="noopener">http://zhiqiang.org/blog/science/from-random-polygon-to-ellipse.html#205604-renren-1-88818-df944fcd07045780572c05da6bfe1373</a>   这个问题之所以有趣，在于你可以用各种理论知识去阐述它，看待它。最简单的，你都不用去写个paper，直接用线性代数中的矩阵变换以及相似矩阵的理论知识就可以去简单证明。然后，又有童鞋发现其线性代数的阐述方法不能揭示其本质，这个问题还可以通过信号处理、傅里叶变换的角度去阐释。甚至我们可以反过来去设计什么样的    迭代方式，能收敛到我们想要的样子；然后这还没完，之后又有同学将其问题拓展到了三维的情景，更进一步地揭示其本质。我之所以举这个例子，是因为这个problem十分巧妙地将各个知识点串在了一起，而且还有拓展性，具有美感。</p>
+<p>   还有我在《迷茫的旅行商》这本上看到了类似很机巧的东西（解释）。这本书对TSP运用了诸如图论、遗传算法、单纯形法等多种解释方法，非常带感。</p>
+<p> 我举这两个例子想要说明的是，他们其实都是非常funny的problem,但其实在现实生活中，可以说几乎没有什么作用。我也几乎不可能能够找人去讨论他们。而当我觉得其十分有趣想要去研究一下的时候，却发现自己已经有心无力了，或者说，自己已经在工程领域的思维方式已经有些禁锢，转换不过来了。就好比哪怕我再多出几十年的工作经验，但是因为思维方式的不同我也不会解决类似<a href="http://maskray.me/blog/2013-12-23-student-festival-1001-puzzle-elf" target="_blank" rel="noopener">http://maskray.me/blog/2013-12-23-student-festival-1001-puzzle-elf</a> 这样十分具有创造性的问题。这已经不是经验和努力的问题了，是最根本思维方式的不同。 我认为技术 is just 技术，技术应该是纯粹的，应该回归其本质。越是有用的东西，往往需要从那些纯粹的理想国里面东摘西取，来弥补自身的不足使自己更加有用，然后愈发地不纯粹。</p>
+<p> 就好比我今天逛知乎，发现喵喵老师一个十分精彩的回答，<a href="http://www.zhihu.com/question/22593916/answer/21909959" target="_blank" rel="noopener">http://www.zhihu.com/question/22593916/answer/21909959</a> 。 可惜我几乎不能看懂，甚至连BOINC是啥都需要去Google。于是我愈发地感觉到我的思维方式、关注的领域以及平时信息获取是很有问题的。知道自己好像哪里不对，就是不知道如何去改善。</p>
+<p>最近在看《哥德尔 巴赫 艾舍尔 集异璧之大成》 里面说到人与机器有一点不同在于机器只会在一个闭合的系统中去持续地工作，而人会时不时去跳出整个系统，看看哪里可能会有问题。现在看来，人做到这点也很难吧。</p>
+
+    </div>
+    <div class="post-epilogue container">
+        <div class="row">
+            
+                <div class="one-third column">
+                    <span>category</span>
+                    <div class="tag-list">
+                        
+                    </div>
+                </div>
+         
+        </div>
+    </div>
+    
+    <div class="comment-container container">
+        
+
+    </div>
+    
+</div>
+

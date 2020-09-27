@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!-- modified from pluskid's blog -->
+<!-- thanks pluskid.. -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Neutronest</title>
+    <meta name="author" content="Chaos ">
+    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
+    <!-- Mobile Specific Metas
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <!-- Google webfonts is almost not accessible from China, so we host locally -->
+    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
+    <!-- CSS
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css"> 
+    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="/css/customize.css">    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+
+<body>
+    <div class="page-header container">
+        <ul class="nav-left">
+            <li class="home"><a href="/about.html">λ neutronest . </a></li>
+            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
+            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
+            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
+            <li class="desktop-only"><a href="/archives">Archives</a></li>
+            <li class="desktop-only"><a href="">Resume</a></li>
+            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
+        </ul>
+
+        <ul class="nav-right">
+            <li><a href="">Github</a></li>
+            <li><a href="">Linkedin</a></li>
+            <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+
+        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
+    </div>
+
+
+<div class="post-container">
+    <div class="post-header">
+        <h2>Windows Azure Storage 论文导读 一种结构化的分析方法 (一)</h2>
+        <div class="post-meta">
+    <span><img src="/img/icon-calendar.svg" width="12px"> 2017-12-30</span>
+
+    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    
+</div>
+
+    </div>
+    <div class="post-content">
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>阅读分布式论文与其他类型的论文，比如深度学习之类的不同。一篇关于深度学习的论文可能全篇都 focus 在一个新模型以及对应的优化方法和应用场景上，其核心是模型本身的idea, intuition, 以及比较 tough 的算法公式推导。分布式系统的论文则不然，由于分布式本身可讨论的问题很多，除了必说的 balance, consistent, replication, throughput, latency 等内容外，还要讲述整个系统的逻辑架构，以及架构里每一子元素的设计细节，内容繁冗驳杂往往难以抓住重点。如果说读机器学习论文如同解数学题的话，那分布式系统的论文阅读毫无疑问就是文史类的长篇阅读理解。</p>
+<p>读分布式的论文还有几个难点。第一是读每个 section 时很难抓住问题的层次，这点对于该领域萌新来说尤为如此。比方说看到一个架构里某一层使用了 entity append only 追加技术，那这一层实现的是分布式协议本身（如 Raft 协议的 log raplica）, 还是抽出来单单用于存储数据的方法？再比如每个论文几乎都要用一些专有名词来表示架构的逻辑单元，比如我们将要谈的 azure 中的 stamp, 这些逻辑单元与实体的对应关系是什么？比如 azure 里的 stamp， 是一个 stamp 对应着一个实体机房？还是由在同一 region 多个机房联合而成的虚拟网络？这两者的不同对 网络传输和 数据同步是否有影响？ 这些内容都需要随着阅读执行脑补。第二个问题是阅读论文时往往沉浸在大量的细节表述中而忽视了整体架构中不同部分的联结关系。这导致的结果是我们对每一层所行使的职能朗朗上口，但倘若有人让我们举一个“ client 向系统发送一个 request 请求时，里面不同层次是如何交互反馈，整体的逻辑过程” 这样一个完整的系统  apply 的例子，那我们就惶惶不能对，完全不能把所有元素串起来了。因此我们需要一种结构化的阅读分析方法，把握系统里层次与层次的联系，并尝试通过举一些实际的例子，把整个系统的设计细节串联起来，从而加深对论文的理解。</p>
+<p>（其实我也很少看到有论文能举出这样哪怕一个例子。大部分时间都是靠脑内对整个系统进行反编译后自己把逻辑流画出来，比较遗憾）</p>
+<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p>本篇文章讨论了微软 Azure 云平台的整体架构和技术方案。整个系统可以说是基于前人(Bigtable, Spinnaker , Dynamo, LevelDB) 的集大成者。系统使用 key range partition 策略来做数据存储的均衡，使用 Log-Structured Merge Tree(LSM)，以 append only 的模式构建了一个操作简单的底层文件系统。从分布式协议来看，Azure 使用了 Paxos 协议来保证数据通信，复制的一致性。整个系统正是由这些前人凝练出的精华构成，因此达到了比较好的效果（作者宣称解决了分布式系统的 CAP 问题， 这……）。</p>
+<p>我们先从整体看一下 Azure 系统的层次关系。</p>
+<p><img src="http://ozm0m0u3j.bkt.clouddn.com/image/blog/Screenshot%20from%202018-01-04%2002-31-59.png" alt="Hyper Architecture"></p>
+<p>Azure 与 GFS 类似，提供是内部全球级别的分布式存储服务。因此 Azure 在各大洲都设立数据中心。每个数据中心由多个实体机房组成。这些实体机房在逻辑意义上被称为 “Storage Stamp”，每个 Stamp 由多个机器节点组成。用户通过 url 的方式向 Azure 发起数据请求。url 的格式类似于 “httpfoobar://AccountName.&lt;service&gt;.core.windows.net/PartitionName/ObjectName”.  这里的 accountName 顾名思义是用户的账户名，Azure 是根据用户名及其所在地区，通过 Location Service 调度到合适的 虚拟IP，然后访问对应数据中心的数据。通过这种方式就可以使得不同国家不同地区的人能够访问合适的数据中心了。</p>
+<p>url 里的service,  指的是用户访问的数据类型。这里就涉及到了Azure 存储的数据类型本身。Azure 提供如下几种访问类型：Blob, 表示 raw user file, 其实就是二进制文件; Tables，也就是传统的结构化数据；还有一种 Queue 任务；用户提交的 Queue 表示一次对blob 以及 table 数据的 processing。</p>
+<p>那 ParttionName 和 ObjectName 又表示什么呢？ 我们继续往下看。这里我们假设用户的一条访问请求为  neutronest.tables.core.windows.net/foo/bar , 即我们要访问 用户 neutronest 中，partitionName = foo, ObjectName=bar 的数据。  假设Azure已经通过 Location Service 成功地把这条数据递送到了某个数据中心的某个 Stamp 中。那么系统是否就能直接通过访问内存或文件把我们想要的数据拿出来呢？答案是否定的。考虑到分布式场景下，因数据总量过大（PB级），而无法把所有文件放到一个单一的节点中。那么一个很自然的想法就是做 Sharding，将数据按照某种规则进行切片放到不同的节点中。再用一个调度表(dispatch table) 记录一下每个节点保存的数据范围。这样当一条请求过来时，我们就可以通过查阅调度表得知这条数据到底储存在哪个节点中，然后访问对应节点就好了。</p>
+<p>实际的分布式场景当然要复杂一些，但原理是类似的。在Azure中，一个 Stamp 从结构上分成三层: Front-End layer, Partition layer 和 Stream Layer. 其中 FE 层主要扮演着调度器的角色。FE 会根据拿到的 accountName 以及对应的用户验证信息， 以及在 Partition Map Table 中查找与 PartitionName 对应的 Partition Range，来决定 用 Partition Layer 中的哪些节点将请求传递下去。这里的 Partition Map Table 起到的就是调度表的作用，引导 FE Layer 与 Partition Layer 进行交互并与相应的节点进行通讯。</p>
+<p>Parition Map Table 严格来说是我们将要谈到的 Partition Layer 来维护的。只是 FE Layer 可以将 Partition Map Table 缓存起来，并及时更新，方便访问。FE Layer 也会进行数据上的缓存以优化多次访问的效率，就不赘述了。</p>
+<p>接下来涉及到的 Partition Layer 和 Stream Layer 是 本篇博客&amp;Paper 的重点，因为 这两层涉及到了 系统的数据访问&amp;写入，以及 load balance ， 是分布式思想的核心体现。</p>
+<p><img src="http://ozm0m0u3j.bkt.clouddn.com/Screenshot%20from%202018-01-04%2021-49-38.png" alt="Partition Layer Figure"></p>
+<p> 与论文里的论述顺序不同，我们选择先来考察 Partition Layer 的数据逻辑流。</p>
+<h2 id="Partition-Layer"><a href="#Partition-Layer" class="headerlink" title="Partition Layer"></a>Partition Layer</h2><p>从这一层开始，对数据的处理就不仅仅考虑派发中转策略，还要考虑存储方式，以及与下面数据流层 (Stream Layer) 的交互手段。但实际上对数据的实际落地是在下一层数据流层来最终完成的，那么这一层究竟又做了什么呢？一方面，我们需要在这一层将数据派发到合适的 partition 节点，在这一过程中涉及到读写一致性和不同 Partition 的数据负担均衡问题；另一方面，我们也需要确定不同数据类型的存储结构，即存储方法的抽象。之后的数据流层会按照我们的存储策略忠实地把数据写入到硬盘数据块中。  因此，我们认为，<strong>分区层 (Partition Layer) 做的是对数据派发和存储的抽象</strong>。</p>
+<h3 id="Data-Dispatch"><a href="#Data-Dispatch" class="headerlink" title="Data Dispatch"></a>Data Dispatch</h3><p>在 Partition Layer 中，数据请求是先通过某种派发策略被传递到合适的节点上 (Partition Server ，简称 PS)。然后再通过存储策略向下层 Stream Layer 发送数据请求完成数据更改落地的。那么我们就先来看看这一层的数据派发策略。在上一节我们已经讨论过，由于分布式系统的数据量过大，数据会被分散到不同的节点上进行处理。因此，一个 Partition Layer 会有多个 Partition Server (PS)， 每个 PS 都独立处理由多个RangePartition 组成的集合。注意在论文里说明，每一个 RangePartition 只会被单独的 PS 所负责，所以这就不像 Spinnaker 那样有 RangePartition 的交叉冗余的情况。 且每一个 PS 在任意时刻都是单点提供服务的，(TODO!!!!) 副本节点不提供在线服务，只负责默默拷贝，这就从根源上解决了副本拷贝延迟和在线服务状态不一致问题（快醒醒！）。且系统保证同一个 RangePartition 在同一时间只会由一个获得了租约许可的 PS 提供服务。牺牲了可用性冗余性解决了一致性，是不是 surprise♂! motherfuck? </p>
+<p>那，一个 PS 节点到底储存并提供哪些 RangePartition 数据呢，也就是说，PS 集群是怎样被控制和管理的呢？ 这里 Partition Layer 使用的是比较传统的 Leader-Follower 策略。在 Partition Layer 中，由多个 Partition Manager (PM) 节点组成的小集群负责对所有 PS 节点的管理工作。这里的管理包括 Partition Arrange, Partition Re-balance, Partition Map Table Update 等多个操作。PM 底层通过 Paxos 策略控制 Leader 选举和保证一致性和服务可用性。这里的 Leader选举 由这一层特有的 Lock Service 协助完成。同时，Lock Service 也控制着 PS 租约配给和期限。  也就是说, Lock Service 同时控制着 PM, PS 两者的租约。 </p>
+<p>一个来自上层 FE 的请求是通过访问 Partition Map Table 来知晓具体对应 Partition Server 的。因此，PM只需要 maintain 并及时更新 Partition Map Table, 就间接地完成了对 PS 的派发控制。而对 Partition Map Table 的控制策略，主要有个 Partition Arrange/Re-balance 两者。前者顾名思义，后者是当某个 PS 节点负载过大或是某个 PS 节点挂掉了，需要将部分 RangePartition 分摊到其他节点时而进行的操作。对分摊操作的讲解会作为 Distributed Spirit 的一部分在后面进行讲解。</p>
+<p>那么到现在，Partition Layer 的数据流程就大致分析的差不多了，我们看到，整个逻辑流是通过上层的 FE, 与该层的 PM, PS, Local Service 协同交互来完成的。之后的存储抽象表示，则主要是由 该层与下面 Stream Layer 的交互来实现。</p>
+<p>总结一下 Partition Layer 与 上层中几大元素之间的关系：</p>
+<p>FE 与 PS:  FE 通过 Partition Map Table 对相应的 PS 发送请求。</p>
+<p>FE 与 PM: PM 根据策略动态修改 Partition Map Table 内容，这些更改会在 FE 调用时体现出来。</p>
+<p>PM 与 PS: PM 通过 Partition Map Table 控制着 PS 的 load balance 和 故障响应。</p>
+<p>Local Service 与 PM : LS 通过租约策略定时选举出一个 leader。</p>
+<p>Local Service 与 PS: 同样通过租约策略，使得对任意一个 RangePartition, 同一时间只有一个单点提供在线服务。</p>
+<h3 id="Data-Store-Abstraction"><a href="#Data-Store-Abstraction" class="headerlink" title="Data Store Abstraction"></a>Data Store Abstraction</h3><p><img src="http://ozm0m0u3j.bkt.clouddn.com/Partition-Steam-Architecture%282%29.png" alt="Partition-StreamArchitecture"></p>
+<p>Partition Layer 维护一个被称作 Object Table 的逻辑数据结构。该表从逻辑形式上由连续的，按某种顺序排列的 row 组成。只是实际实现上会被划分成多个 RangePartition, 然后在每个 Partition 中实现这样的连续 row 罢了。从数据类型的纵向划分来说， Object Table 由储存传统一般结构向数据 entity table, 以及专门存储大二进制数据 blob table, 以及存储 queue 操作信息的 message table 组成。另外，还有保存 storage account 元信息以及配置的 account table 等等。从数据存储模型来看(比如 B+树，跳表等等)，Partition Layer 继承了 LevelDB &amp; BigTable 的思想，使用 Log-Structure Merge Tree 来组织数据。LSM 是一种基于 write-append only 的，将数据储存划分成多个层次的数据存储模型。在该模型中，最频繁被访问，或者最近被更新过的数据会被提升到最靠前的层次。最常见的一种 LSM 的实现策略，是使用内存作为 Level 0 顶层 (访问这一部分的数据最快)，然后在硬盘上以 Level 1 ~ n 的形式将数据按照频繁到不频繁访问的顺序排列起来。 使用 LSM 的好处在于，可以仅仅通过追加写的方式执行 write 操作， 大大减缓读取 HDD 磁道的时间，而在查找方面，LSM 支持多层次的二分查找，查询效率也十分优异。</p>
+<p>有人也许会问，如果采用写追加的方式更新数据，那么在某个时刻不就会出现一些数据在 LSM 被记录多次的情况吗，这时相应的数据访问该怎样处理呢？ 是这样的，当某个已存在的数据以写追加的形式进行更新时，该更新的新值会被重置在 LSM 中最靠前的层次。这样可以保证，当出现一条对该数据的请求时，系统按照层次的先后顺序能够先访问到更新值就可以了。而老值因为不会被访问到而实质上失去了意义(当然也许在快照 replay 中起到作用)。</p>
+<p>但是 Object Table, RangePartition，LSM，这几者的层次关系是怎样的呢？ 我们梳理一下该层整体结构关系： 一个大的 Object Table 由多个履行不同数据职能的子 Table 构成。而各个子 Table 的基本组成单元是 RangePartition。 因此，搞清楚 RangePartition 的内部结构，就基本等价于搞清楚  Partition Layer 的数据结构。而且，Partition Layer 与 Stream Layer 的交互从逻辑上也是在 RangeParition  内部进行的。</p>
+<p><img src="http://ozm0m0u3j.bkt.clouddn.com/Screenshot%20from%202018-01-09%2021-33-19.png" alt="RangePartition Structure"></p>
+<p>那么我们就来剖析一下 RangePartition 的内部结构。RangePartition 数据存储模型分成两部分： 在内存中的存储以及文件底层的 Streams 存储。当 一个 Partition Server 接收到了一条来自 Front End 的数据请求，并定位到对应的 RangePartition 时，该条数据更改的历史记录会同时存入到 Memory Table 内存和 Commit Log Stream 中。 Commit Log Stream 本质上是由多个 Stream 以 LSM 的层次方式，组成的 Stream 集合。它以 log append 的方式记录下了每一个数据更改的历史记录（注意是数据的历史记录而不是数据本身！）。Memory Table 的数据模型与 Commit Log Stream 雷同，只是直接放入内存中，更快更便于访问罢了。当 Memory Table 或者 Commit Log Stream 存储的数据大小满足一个阈值条件时，会触发向 Row Data Stream 的写入操作。系统会将 Memory Table 里的数据 dump 到 Row Data Stream 中并标记这些数据为最新的 checkpoint。所以 Row Data Stream 做的是真正意义上的数据存储，而 Row Data Stream 的结构与 Commit Log Stream 相同，也是基于 LSM 的 Stream 集合。这样数据就通过先存 内存/日志然后将数据最近更新点 dump 到 Row Data Stream 完成落地了。 </p>
+<p>至于 Blob Data Stream, 则有些特殊。这牵扯到 Blob Table 与其他类型 Table 的不同之处。一般来说，无论是Account Table, 还是 Entity Table, 它们内部的每个 RangePartition, 都会有且仅有一个 Row Data Stream 集合 和 Commit Log Stream 集合。 Blog Table 则不然，考虑到大二进制数据存储的频繁程度，将二进制数据本身以写追加，允许大量历史冗余的模式直接放入 Row Data Stream 显然不太合适。相应的，Blob Table 使用专门的 Blob Data Stream 去存放二进制数据本身（大块文件可以被分散成一个个小部分存到硬盘中），然后单独地拿出来一条 Row Data Stream 集合用于记录这一系列小文件的地址。在这个附加的 Row Data Stream 中，每一条数据都是一个指针集合组成的 list ，而 list 中的每个指针指向的是一个小数据碎块的地址。这当二进制数据变化时，更改的是储存这些数据的地址而已，而相应原来老地址数据则可以标识弃用。而且真正使用时，通过将这些指针指向的数据块拼接在一起(可以类比一下 python 中的 ‘str’.join()操作) 就可以还原一份巨大的原始数据了。而且在 Blob Table 的 RangePartition 中，Commit Log Stream 也不再储存保存历史，而是直接存大文件本身（可以理解，存大文件的历史就gg了）。这些数据也不会存储在内存中了（能存的下么……）。</p>
+<p>其他内容，比如 meta stream, 还有一些增加系统效率的缓存策略，由于不是整个系统的结构关系重点，就不一一进行描述了。</p>
+<p>（这一节的逻辑比较复杂，部分地方还是存疑的，欢迎同行指正）</p>
+<p>对 Stream Layer 的描述，Partition Layer 的分区划分合并策略， 以及整个系统的 Replica 策略会放到后文中进行（如果有的话）。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>1  <a href="http://www.open-open.com/lib/view/open1424916275249.html" target="_blank" rel="noopener">Log Structured Merge Tree 原理</a> </p>
+<p>2 <a href="http://wizmann.tk/azure-storage-made-simple.html" target="_blank" rel="noopener">Windows Azure Storage Made simple(不)</a> </p>
+<p>3 <a href="http://sigops.org/sosp/sosp11/current/2011-Cascais/11-calder-online.pdf" target="_blank" rel="noopener">WAS 原始论文</a></p>
+<p>接下来的内容：</p>
+<p>Stream Layer / Replica / Consistent / Load Balance</p>
+
+    </div>
+    <div class="post-epilogue container">
+        <div class="row">
+            
+                <div class="one-third column">
+                    <span>category</span>
+                    <div class="tag-list">
+                        
+                    </div>
+                </div>
+         
+        </div>
+    </div>
+    
+    <div class="comment-container container">
+        
+
+    </div>
+    
+</div>
+

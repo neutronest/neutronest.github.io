@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!-- modified from pluskid's blog -->
+<!-- thanks pluskid.. -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Neutronest</title>
+    <meta name="author" content="Chaos ">
+    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
+    <!-- Mobile Specific Metas
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <!-- Google webfonts is almost not accessible from China, so we host locally -->
+    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
+    <!-- CSS
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css"> 
+    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="/css/customize.css">    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+
+<body>
+    <div class="page-header container">
+        <ul class="nav-left">
+            <li class="home"><a href="/about.html">λ neutronest . </a></li>
+            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
+            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
+            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
+            <li class="desktop-only"><a href="/archives">Archives</a></li>
+            <li class="desktop-only"><a href="">Resume</a></li>
+            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
+        </ul>
+
+        <ul class="nav-right">
+            <li><a href="">Github</a></li>
+            <li><a href="">Linkedin</a></li>
+            <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+
+        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
+    </div>
+
+
+<div class="post-container">
+    <div class="post-header">
+        <h2>Bayesian Occam Razor</h2>
+        <div class="post-meta">
+    <span><img src="/img/icon-calendar.svg" width="12px"> 2015-01-12</span>
+
+    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    
+</div>
+
+    </div>
+    <div class="post-content">
+        <h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p>问题1：</p>
+<p>请看如下图片。在图片中那些灰色的，黑灰色的，以及黑色的均是box。现在考虑图片中被树挡住的部分，请问被树挡住的有几个box?</p>
+<p><a href="http://s890.photobucket.com/user/neutronest/media/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534842709_zpsd14c32b8.png.html" target="_blank"><img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534842709_zpsd14c32b8.png" border="0" alt=" photo 5C4F5E555FEB71672015-01-124E0B534842709_zpsd14c32b8.png"/></a></p>
+<p>你会选择1个， 还是2个？</p>
+<a id="more"></a>
+
+<p><a href="http://s890.photobucket.com/user/neutronest/media/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534842715_zpsd724820e.png.html" target="_blank"><img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534842715_zpsd724820e.png" border="0" alt=" photo 5C4F5E555FEB71672015-01-124E0B534842715_zpsd724820e.png"/></a></p>
+<p>问题2：</p>
+<p>给定一个有限数列： -1，3， 7， 11。 请问接下来的两个数是多少？</p>
+<p>答案1：15, 19 (我认为它满足一个首项为-1，递增项为4的等差数列)。</p>
+<p>答案2：-19.9，1043.8 (我认为它满足一个 <div>$ -x^{3}/11 + 9/11x^{2} + 23/11$</div>  的多项式数列 …..)</p>
+<p>我想绝大多数人面对以上两个问题都会选择比较“自然”的那种，即树后面就一个箱子，（-1，3，7，11）就是一个等差数列罢了；而非大开脑洞，认为今天迎面走来的朝夕相处的同学不是其本体，而是一个正面是人脸，背面是鬼头的双面怪。即“如果对于某种已观测到的事物(observed dataset)，我有A B C三种解释方式，那么我会倾向于选择胸最大，哦不，是选择最simple的一个来阐述观测现象”。</p>
+<p>我们再从直觉上出发，考虑如下的plot图。</p>
+<p><a href="http://s890.photobucket.com/user/neutronest/media/5C4F5E555FEB71672015-01-124E0B534844928_zps00435734.png.html" target="_blank"><img src="http://i890.photobucket.com/albums/ac103/neutronest/5C4F5E555FEB71672015-01-124E0B534844928_zps00435734.png" border="0" alt=" photo 5C4F5E555FEB71672015-01-124E0B534844928_zps00435734.png"/></a></p>
+<p>在图中，横坐标表示已观测出的数据点的分布，纵坐标表示某个假设H在某个点上的置信度evidence。从图中可以看出，假设H1比假设H2要更simple, 命中了更少的数据，但反而因此对于那些命中的数据点而言置信度更高了。而H2因为要照顾到所有的数据，所以相对H1而言所分摊的单位probability mass更少了，解释性较差。</p>
+<p>再看一个类似的例子。</p>
+<p><a href="http://s890.photobucket.com/user/neutronest/media/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534850302_zps0d82fedb.png.html" target="_blank"><img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534850302_zps0d82fedb.png" border="0" alt=" photo 5C4F5E555FEB71672015-01-124E0B534850302_zps0d82fedb.png"/></a></p>
+<p>横坐标依然表示observed dataset, 而M1, M2, M3分表表示阐述这个data的三个不同的模型。三个模型中, 复杂度 M3 &gt; M2 &gt; M1， 而对于数据点D_{0}的解释程度，M2 是最适合的，M1因为模型过于简单所以直接bias了。而M3因为过于复杂，拟合了过多的数据，所以概率密度更“薄(thin)”了，原因与上个例子类似。</p>
+<p>从上面两个例子可以看出，同样两个说法，或两个模型如果都能解释某个现象，或者所观测到的数据（即如无必要），那么，越是复杂的模型，其单位解释力越差，反而不如相对简单的模型（即勿增实体）。</p>
+<p>即(bayesian)奥卡姆剃刀原则。</p>
+<p> A theory with mathematical beauty is more likely to be correct than an ugly one that fit some experimental data.</p>
+<h3 id="Theoretical-explanation"><a href="#Theoretical-explanation" class="headerlink" title="Theoretical explanation"></a>Theoretical explanation</h3><h4 id="Bayesian-Model-Selection"><a href="#Bayesian-Model-Selection" class="headerlink" title="Bayesian Model Selection"></a>Bayesian Model Selection</h4><p>严格地说，bayesian model selection 与其说是Occam’s Razor的一种解释，不如反过来说是其在理论层面的应用，所以两者可以说是相互映衬的。</p>
+<p>在data modeling中，我们涉及到两次inference过程，第一次是model fitting, 即我们尝试用Model m去解释数据集，然后根据MAP等方法去得出m中的参数$\theta$。第二次是我们通过计算，发现有$m_{i} \in M$种model都可以去解释数据集，但是我们要从中选择更为可靠的一种，即 bayesain model selection.当我们还处在第一阶段时，我们有 $p(\theta \mid D) = \frac{p(D \mid \theta)p(\theta)}{p(D)}$ 其中$ p(D\mid \theta)$ 是似然，是我们比较关心的部分， 而$ p(\theta)$ 是params的先验，可以人为设定成uniform prior，也可以根据具体采用的model所对应的conjugate prior。$ p(D) $ 在此时是一个常量。但如果考虑到在不同模型，或者不同的假设下的影响，就变成了</p>
+<p>$$ p(\theta \mid D ,m_{i} ) = \frac{p(D \mid \theta, m_{i} )p(\theta \mid m_{i})}{ p(D \mid m_{i} )}  $$</p>
+<p>即 $ p(\theta \mid D, m_{i})  \propto \frac{ likelihood \times prior  }{ evidence} $。其中分母表示evidence，其实就是在之后第二步inference中的需要考虑部分。</p>
+<p>现在假设我们已经有了$ m_{1}, m_{2}… m_{3}.. $ 等M个模型都可以用来represent dataset。我们想通过$ p(m_{i} \mid D) $来判定哪个模型是最plausible的。我们有</p>
+<p>$$<br>p(m_{i} \mid D) \propto p(D \mid m_{i}) \times p(m_{i})<br>$$</p>
+<p>其中$p(m_{i})$又相当于 $m_{i} $的先验部分, 现在假定它们都是equal的。 而$ p(D \mid m_{i}) $ 即第一步中的evidence， 是我们为了比较模型之间的合理性而度量的部分。于是关键的部分就在于evaluating the evidence。</p>
+<p>现在我们看看Bayesian Occam’s Razor是如何发挥作用的。考虑$m_{i}$ 和模型中参数 $\theta$的关系，我们有$ p(D \mid m_{i}) = \int p(D \mid \theta, m_{i})p(\theta \mid m_{i})d\theta $。但是这样既不直观也不好计算。万幸，我们可以通过Laplace’s method来进行近似。</p>
+<p>$$<br>p(D \mid m_{i}) \approx p(D \mid \theta_{MP}, m_{i}) \times p(\theta_{MP} \mid m_{i})\sigma_{\theta \mid D}<br>$$</p>
+<p>其中，$\sigma_{\theta \mid D}$ 表示被积函数$ p(D \mid \theta, m_{i})p(\theta \mid m_{i}) $形成的peak所对应的宽度。MP表示maximum posterior。所以前半部分的$p(D \mid \theta_{MP}, m_{i}) $就是best fit likelihood, 而后面的$ p(\theta_{MP} \mid m_{i})\sigma_{\theta \mid D} $即是Occam factor。</p>
+<p><a href="http://s890.photobucket.com/user/neutronest/media/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-224E0B534840039_zps27ae34f7.png.html" target="_blank"><img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-224E0B534840039_zps27ae34f7.png" border="0" alt=" photo 5C4F5E555FEB71672015-01-224E0B534840039_zps27ae34f7.png"/></a></p>
+<p>现在让我们思考一下$p(\theta_{MP} \mid m_{i})$的几何意义。考虑$\theta$是单参数的情况。我们用$\sigma_{\theta}$表示参数$\theta$相对于$m_{i}$的取值interval。则$p(\theta_{MP} \mid m_{i})$可以用 $\frac{1}{\sigma_{\theta}}$来表示。于是乎，终于，我们得出</p>
+<p>$$<br>Occam Factor = \frac{\sigma_{\theta \mid D}}{\sigma_{\theta}}<br>$$</p>
+<p>The Occam factor is equal to the ratio of the posterior accessible volume of $m_{i}$’s parameter space to the prior accessible volume.</p>
+<h4 id="Minimum-description-length-MDL"><a href="#Minimum-description-length-MDL" class="headerlink" title="Minimum description length(MDL)"></a>Minimum description length(MDL)</h4><p>对Occam’s Razor的另外一种解释方法是Minimum description length。该思想来源于（无损的理想情况下）信息传输。如果将之前的概率方法转化成待传输的比特信息，则有</p>
+<p>$$<br>P(x) = 2^{-L(x)}, L(x) = -log_{2}{P(x)}<br>$$</p>
+<p>其中L(x)代表传输的信息长度。现在想象一下啊，我们用一个模型$M$去传输数据$D$（这里的模型M代表数据的传输方法，比如压缩算法等）。那么这样所需的信息长度$L(D, M)$, 是$ L(D, M) = L(M) + L(D \mid M) $。 这里的$L(M)$对应着之前的$P(M)$先验。而$L(D \mid M)$相当于之前的$P(D \mid M)$。 因此， 我们有：</p>
+<p>$$<br>L(D, M) = -logP(M) - logP(D \mid M)<br>$$</p>
+<p>但是它的量化分析略为困难。我们先直观地看一下。比方说模型M表示对数据D的压缩。当模型M自身的params很少（就是说模型很简单时），对数据的压缩效果并不是很好(对应下图的第1个)。但是相应的，如果模型自身过于复杂的话，虽然对数据的压缩效果较好，但是模型自身占用的信息长度却很大，导致信息总体长度依然无法最优（对应下图第3个）。</p>
+<p>因此，当压缩模型自身的复杂度恰到好处时，刚好达到最小描述信息的长度，即MDL（下图中第2个）。</p>
+<p><a href="http://s890.photobucket.com/user/neutronest/media/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-294E0B534831357_zpsdec1b3a6.png.html" target="_blank"><img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-294E0B534831357_zpsdec1b3a6.png" border="0" alt=" photo 5C4F5E555FEB71672015-01-294E0B534831357_zpsdec1b3a6.png"/></a></p>
+<p>所以MDL侧面反映了model对data的解释力以及model本身复杂度的trade-off。</p>
+<p>烂尾了。。。。回头补一些application.</p>
+
+    </div>
+    <div class="post-epilogue container">
+        <div class="row">
+            
+                <div class="one-third column">
+                    <span>category</span>
+                    <div class="tag-list">
+                        
+                    </div>
+                </div>
+         
+        </div>
+    </div>
+    
+    <div class="comment-container container">
+        
+
+    </div>
+    
+</div>
+

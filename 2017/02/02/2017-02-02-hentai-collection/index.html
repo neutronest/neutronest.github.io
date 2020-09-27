@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!-- modified from pluskid's blog -->
+<!-- thanks pluskid.. -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Neutronest</title>
+    <meta name="author" content="Chaos ">
+    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
+    <!-- Mobile Specific Metas
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <!-- Google webfonts is almost not accessible from China, so we host locally -->
+    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
+    <!-- CSS
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css"> 
+    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="/css/customize.css">    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+
+<body>
+    <div class="page-header container">
+        <ul class="nav-left">
+            <li class="home"><a href="/about.html">λ neutronest . </a></li>
+            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
+            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
+            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
+            <li class="desktop-only"><a href="/archives">Archives</a></li>
+            <li class="desktop-only"><a href="">Resume</a></li>
+            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
+        </ul>
+
+        <ul class="nav-right">
+            <li><a href="">Github</a></li>
+            <li><a href="">Linkedin</a></li>
+            <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+
+        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
+    </div>
+
+
+<div class="post-container">
+    <div class="post-header">
+        <h2>HHHentaiCollection☆!!! —— 一个ML数据集的设想</h2>
+        <div class="post-meta">
+    <span><img src="/img/icon-calendar.svg" width="12px"> 2017-02-02</span>
+
+    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    
+</div>
+
+    </div>
+    <div class="post-content">
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>机器学习以及应用已经成为了当今最为流行的话题之一。一些重要的探索性项目如AlphaGo, 无人车等都依赖着机器学习模型作为其基础设置做支撑。机器学习光有模型是远远不够的，还需要有足够用于其训练的数据—— 我们称之为数据集。  然而我们知道目前常见的机器学习任务细分数量多而驳杂，即便只是 narrow 到文本与图像方面，也会包括但不限于情感分析，机器翻译，摘要生成，对话生成，上下文对话分类，图像识别，图像生成，看图说话等多个子领域。这其中每一个领域的研究与应用，都需要一一收集相应的数据。这就使得数据的采集和处理工作变得十分冗余和繁琐。目前已公开的知名数据集如 MNIST, IMAGENET 是图像相关的，而诸如 swda 等数据集则 cover 了情感分析等文本方面的数据。但是这些都是零散的，不一体化的。研究者如果需要处理某些交叉性质的任务，比如看图说话，也许就需要自己手动收集新的数据，十分的辛苦。</p>
+<p>那么，有没有可能存在某些实际的 application data, 它既包含丰富的文本信息，也涵盖了海量的图像信息；它的所包括的文本最好是多语言的，这样可以做多语言翻译；它的语言最好是生活化的，带有情感的，这样可以做情感分析和自然语言生成；它的图像最好是自带tag标注的，这样我们可以轻松地应用到图像分类中；它的图像希望也包括一些连续变换的信息，这样或许可以应用到图像的插值生成等任务；它的图像或许还包含了不同的生活化风格，这样就可以拿来做neutral style 等任务中；如果它的图像有文字对应那就更好了，我们还可以拿它来做看图说话。能够满足如此之多任务需要的天然数据平台真的存在吗？答案是肯定的，就是 E-Hentai  (<a href="http://e-hentai.org/" target="_blank" rel="noopener">http://e-hentai.org/</a>) 。</p>
+<p>作为全球最大的H漫画浏览&amp;收集平台之一，E-Hentai收录了各种同人展上的H漫画，Game CG, 甚至 一些 Anime 的动态截图等。资源涵盖广泛，tag 标注齐全，且广大地收录了同一作品不同语言的翻译版本。抛开网站内容本身的性质不谈，如果只考虑与上述任务的契合程度，我们惊奇的发现该网站与我们的诉求是高度统一的。</p>
+<p>在该网站内，一个典型的漫画内容包含如下几个要素：</p>
+<ul>
+<li>title: 该漫画的名称</li>
+<li>language: 该漫画所用的自然语言，如日语，汉语，英语，阿拉伯语</li>
+<li>artist: 该漫画的作者</li>
+<li>female: 该漫画所对应的 tag ，一个漫画可能包括多个tag分类。</li>
+<li>content: 该漫画的具体内容，由一张张的图片组成</li>
+</ul>
+<p>此外，网页上还包含了关于其他补充信息，比如该漫画的大分类(Game CG 还是 Manga 等)，该漫画的篇幅大小（以图片p 数来计数）等。但是对我们的任务并不是很有帮助，所以可以略过不表。</p>
+<p>一般地，一个漫画的篇幅大约在 20p ~ 35p 之间。但是少部分漫画是以一个系列的合集形式展示出来，这有点类似与期刊，这样的漫画篇幅大约在 200p ~ 800p 之间。常见的漫画会以图文的形式描述一个或多个故事，文字的连贯性较强，分镜的连贯性较差。</p>
+<p>一个 Game CG的篇幅大约在 200p ~ 1000p 之间，这与期刊类漫画相似。与漫画相比，Game CG 几乎没有任何文字，但是分镜具有高度的连贯性。</p>
+<h2 id="Task-Example"><a href="#Task-Example" class="headerlink" title="Task Example"></a>Task Example</h2><p>下面就从几个例子说明如何将该网站的数据应用到我们的任务当中。</p>
+<p>1、图片识别</p>
+<p><img src="http://i1.piimg.com/567571/ac6d5b02cecbca84.png" alt="ehentai-图片识别"></p>
+<p>如图所示，一个漫画包含多个 tag。我们可以据此给该漫画的所有图片打上 tag 标记，用于图像分类的任务中。</p>
+<p>2、机器翻译</p>
+<p><img src="http://i1.piimg.com/567571/686ce3ddd553a416.png" alt="机器翻译"></p>
+<p>一个漫画作品通常有多个语言的翻译版本。有的作品甚至有超过10多种语言以上的翻译版本。因此这些漫画作为天然的罗塞塔石碑，将其文本提取出来，就可以完美应用于多语言的机器翻译任务中，还可以满足基于上下文（context）的需求。</p>
+<p>相应还有看图说话，以及对话生成，都是支持比较好的。</p>
+<p>3、图片生成与采样</p>
+<p><img src="http://p1.bpimg.com/567571/63a4152f2062d0cf.png" alt="连续图"></p>
+<p>上图为某个Game CG 的缩略浏览图</p>
+<p>如上图所示，该网站不仅有漫画收集，也有大量的 Game CG图包收录。这些图包的图片往往包含大量的连续动作信息，可用于连续图片生成。</p>
+<p>4、图像风格判定与转换</p>
+<p>E-Hentai 在拥有海量漫画的同时，自然也包含了大量漫画作者的作品。同一个作者在画不同漫画作品时，其风格往往是统一的；相应的，不同作者的作画风格则迥然不同。</p>
+<p>还可以使用 GAN 做不同作者之间的图片风格转换。比如输入为一张大嘘老师的漫画图，artist transform chain 为  大嘘 → 比村， 生成比村老师风格的大嘘原创漫画。</p>
+<p>由于某些原因，这里就不放图了。</p>
+<p>以上就是我们举出的该网站数据可以胜任的任务类别。类似能够cover的任务还有很多。</p>
+<h2 id="Future-Work"><a href="#Future-Work" class="headerlink" title="Future Work"></a>Future Work</h2><p>上述内容给出一个使用该网站数据内容当作机器学习数据集的简单构想。下面我们具体规划一下如果想实现一个该数据集，可能的工作有哪些。</p>
+<p>我们将该数据集采集项目命名为 HentaiCollection☆!!!。 该数据集会从网站筛选出約几千部作品，上万张图片作为原始图片样本。一般地，一个作品包含多张图片。一部作品与一个作者，多个tag分类，相对应。这些 tag和作者标注也可以一一 downcasting 到该作品的每一张图片上。每张图片都会有对应的文本内容，以及对应的语言类别。</p>
+<p>对于那些依赖于上下文的任务，我们会特别地将一部作品（典型的，如一部CG作品）中的内容按照连续内容相似度划分成多个 chunk。每个chunk 包含了连续变化的 segment figures。</p>
+<p>我们对数据集的采集与标注是 fine-grained &amp; coarse-grained 并存的。我们不仅会维护同一个作品内图片彼此之间的关系，还会维护那些 同一title翻译成不同语言的作品集合，以及那些由同一作者产出的作品集合，以供机器翻译和 style 识别&amp;转换 等任务的使用。</p>
+
+    </div>
+    <div class="post-epilogue container">
+        <div class="row">
+            
+                <div class="one-third column">
+                    <span>category</span>
+                    <div class="tag-list">
+                        
+                    </div>
+                </div>
+         
+        </div>
+    </div>
+    
+    <div class="comment-container container">
+        
+
+    </div>
+    
+</div>
+

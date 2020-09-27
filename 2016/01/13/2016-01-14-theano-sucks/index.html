@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- modified from pluskid's blog -->
+<!-- thanks pluskid.. -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Neutronest</title>
+    <meta name="author" content="Chaos ">
+    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
+    <!-- Mobile Specific Metas
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <!-- Google webfonts is almost not accessible from China, so we host locally -->
+    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
+    <!-- CSS
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css"> 
+    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="/css/customize.css">    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+
+<body>
+    <div class="page-header container">
+        <ul class="nav-left">
+            <li class="home"><a href="/about.html">λ neutronest . </a></li>
+            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
+            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
+            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
+            <li class="desktop-only"><a href="/archives">Archives</a></li>
+            <li class="desktop-only"><a href="">Resume</a></li>
+            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
+        </ul>
+
+        <ul class="nav-right">
+            <li><a href="">Github</a></li>
+            <li><a href="">Linkedin</a></li>
+            <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+
+        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
+    </div>
+
+
+<div class="post-container">
+    <div class="post-header">
+        <h2>Theano 大雾 小记</h2>
+        <div class="post-meta">
+    <span><img src="/img/icon-calendar.svg" width="12px"> 2016-01-13</span>
+
+    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    
+</div>
+
+    </div>
+    <div class="post-content">
+        <p>使用 theano 有一段时间了，以下是我遇到的问题以及困惑，不知道有没有同好遇到过：</p>
+<h3 id="1-捉鸡的-Scan"><a href="#1-捉鸡的-Scan" class="headerlink" title="1. 捉鸡的 Scan"></a>1. 捉鸡的 Scan</h3><p>我对 theano 一半以上的纠结都是在 scan 上。</p>
+<p>作为在表达式中表示寻循环的方法，scan 我相信大家都用过。我不知道以下问题大家有没有碰到过：</p>
+<p>a. scan 套 scan 速度感人。</p>
+<p>我就默认大家都实现过 RNN 或者 LSTM. 在实现这一类基于序列的神经网络中，你几乎至少要用一层 scan. 这是正常情况。一般在这样的情况下 compile 相关的 function 只需要几分钟时间，最多总不会超过20分钟。</p>
+<p>然而大家为了灌水总要在模型上修修改改，有时候难免会遇到 scan 套 scan 的情况。这种时候 compile function 的时候花费时间会彪的飞起，我最长碰上过 compile 1个小时的情况。</p>
+<p>b. scan 中糟糕参数的传递限制</p>
+<p>比如说你用 scan 实现一个 recurrent neural network, 你在计算 (h_{t}) 的时候，要用到上一步的 (h_{t-1}). 这时(h_{t-1}) 是通过上一次 scan 方法的return得到的。如果你的模型复杂一点，那你在scan方法内就要返回更多的东西，比如 cell state (c_{t-1}), 如果你还要做变种，那你就要额外再加些别的，这当然没有问题，但是……</p>
+<p>我不知道大家遇到过这样的情况没有，就是说你希望你每次输出的 向量或矩阵是变长的，就好比说每次在 scan 中计算一个 (m_{t})，这个 (m_{t})每次迭代时都会向下添加一维。这个时候坑爹的设定就来了，我发现scan中对返回值的要求是要固定维数！这意味着我必须在初始化的时候就直接开好一个大矩阵，这个矩阵除了第一行其他行都padding 为0，然后每次迭代的时候set_subtentor 重新构造一个与这个大矩阵同维度的新矩阵然后返回！ theano 学函数式学啥不好偏偏这时候非要 immutable, 导致了循环中大量的资源占用，而且为实现添加了不必要的麻烦（我觉得）。</p>
+<p>c. immutable 机制导致 function compile 时候的时间过长</p>
+<p>这里提一下上述说的 immutable. 在 theano 中，由于你定义的表达式要形成一个 graph 来为后面的自动求导做准备，因此定义的变量很多情况下是不能修改的，比如你定义一个矩阵M。然后在某个操作中你希望更新这个矩阵中的某一维，你发现你不能直接使用诸如 M[2, :] = .. 的形式, 而是使用 theano 官方提供的 set_subtensor 还有一个相应的姊妹函数来 new 一个新的矩阵来满足要求，这不是问题，可以理解。但是当把set_subtensor 放入 scan 的时候编译时间不要太长好吗！</p>
+<p>这个缺陷我搜索过相关邮件列表，有人遇到过相同的瓶颈，除了想办法绕过去并没有太好的解决方案。</p>
+<h3 id="2-theano-定义-function-时缺乏灵活的多态机制。"><a href="#2-theano-定义-function-时缺乏灵活的多态机制。" class="headerlink" title="2. theano 定义 function 时缺乏灵活的多态机制。"></a>2. theano 定义 function 时缺乏灵活的多态机制。</h3><p>我不知道其他人有没有这样的需求。比方说你需要对同一个数据集实现多个模型做对比实验，你实现两个模型：LSTM, LSTM-peephole. 这两个模型你会发现很多表达式与变量定义可以通用。这时候你当然可以搞父类子类来写有扩展性的代码，恩恩，大丈夫。然后当最后你写 theano function 时发现傻逼了。只要 inputs 参数有一点不一样，你就需要写一个新的 function. 如果你想实现10个LSTM的变种，你就需要写10个对应的function. 然后用 if else 来控制哪个模型与哪个function 相对应，坑爹呢！有一个相应的解决办法是搞一个input variable 的并集，然后在统一定义一个 function, 在其中加入 on_unused_input 来标记自动忽略未使用的参数。但是这在参数定义的时候就需要在不同的模型中加入冗余的变量来保证一致性。我不知道有没有更好的方法来解决这个问题。</p>
+<h3 id="3-困难的调试方法"><a href="#3-困难的调试方法" class="headerlink" title="3. 困难的调试方法"></a>3. 困难的调试方法</h3><p>由于 theano 的时候是严格遵循三步走战略，即：a.表达式定义 b. 函数编译 c. 主程序调用theano编译好的函数来获得结果。 这就导致的传统的测试方法到了 theano 这里变得比较困难。想知道自己的模型表达式定义的对不对？对不起等函数先编译好了再说。然后编译函数需要一个多小时。你跑起了程序，然后趁着函数编译的时候打打舰娘，等打了1小时终于撈到了Roma回头看程序跑的情况，我草word embedding 的维度变了但是输入层大小忘调了GG！由于theano 在表达式定义的时候是不会帮助你去检查你的矩阵相乘、dimshuffle 等操作的时候维度是否对应，你要么等着编译好后跑实际数据看出不出错，要么尝试把中间步骤拆开一步一步构造测试数据排查错误，这其中的工作量可想而知。在这里我也向诸位知友请教一下 theano的调试最佳实践，我暂没有找到更好的方法。</p>
+<p>以上就是我在使用 theano 的时候遇到的一些困惑，希望能与大家交流，将问题一并解决，让实验更加顺利(</p>
+
+    </div>
+    <div class="post-epilogue container">
+        <div class="row">
+            
+                <div class="one-third column">
+                    <span>category</span>
+                    <div class="tag-list">
+                        
+                    </div>
+                </div>
+         
+        </div>
+    </div>
+    
+    <div class="comment-container container">
+        
+
+    </div>
+    
+</div>
+

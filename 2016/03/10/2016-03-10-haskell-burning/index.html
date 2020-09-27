@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!-- modified from pluskid's blog -->
+<!-- thanks pluskid.. -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Neutronest</title>
+    <meta name="author" content="Chaos ">
+    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
+    <!-- Mobile Specific Metas
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <!-- Google webfonts is almost not accessible from China, so we host locally -->
+    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
+    <!-- CSS
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css"> 
+    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="/css/customize.css">    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+
+<body>
+    <div class="page-header container">
+        <ul class="nav-left">
+            <li class="home"><a href="/about.html">λ neutronest . </a></li>
+            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
+            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
+            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
+            <li class="desktop-only"><a href="/archives">Archives</a></li>
+            <li class="desktop-only"><a href="">Resume</a></li>
+            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
+        </ul>
+
+        <ul class="nav-right">
+            <li><a href="">Github</a></li>
+            <li><a href="">Linkedin</a></li>
+            <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+
+        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
+    </div>
+
+
+<div class="post-container">
+    <div class="post-header">
+        <h2>我们并不清楚我们不清楚的是什么—— Haskell 学习小感</h2>
+        <div class="post-meta">
+    <span><img src="/img/icon-calendar.svg" width="12px"> 2016-03-10</span>
+
+    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    
+</div>
+
+    </div>
+    <div class="post-content">
+        <p>我们并不知道我们所不知道的是什么，这话在 Haskell 的学习中体现的十分明显。</p>
+<p>最近 Haskell 出了一本 1000+ 页的新书，是一个关于 Haskell 入门的 self-contain 的书。这本书确保 Haskell即便是你接触的第一门语言，你也可以无伤学会她。</p>
+<p>这看上去真不错！至少她改变了 Haskell 在 education 领域是 immature 的现状。我一直在用那本书学习，虽然篇幅很长，但确实内容翔实，比 Haskell趣学指南 以及 RealWorldHaskell 要详细很多。但是，这仍然存在一个问题。这个问题是，如果你不把这一本1000+页的书细致地，从头到尾读完，我赌5毛钱你连一个最浅的实际应用都写不来。这不是书本身的问题，是 Haskell 的语法设计不断迭代的过程中，加入了PL界的很多最新研究成果，但是这些成果丝毫不能改变 Haskell 在实际场景几乎无一是处的现状——————这一事实所导致问题。</p>
+<p>在你对我上述定语过长难以阅读的句子结构以及句子本身的内容进行吐槽前，请允许我提示一句，上述内容并不是我谬言的，而是 <a href="https://github.com/Gabriel439/post-rfc" target="_blank" rel="noopener">Haskell 生态现状</a>这一调研报告所呈现出来的。如果你仔细去看这份报告，你会惊喜的发现， Haskell 几乎不能胜任除了与编译器等与PL领域相关任务之外的所有领域的任务。一些热衷于“函数式语言多么适合搞流处理，分布式啊”的人也会发现 Haskell 在这项领域也并不是 best class。 如果连专门写 Haskell 的 Tweag 公司都对 “用 Haskell 从底层实现分布式框架”等任务望而却步进而绕个路去实现 spark 的 Haskell 接口的话，我不清楚并不是 SP Jones 的你，有什么信心来挑战这一切。</p>
+<p>当然上面所说的问题也并不是今天我要说的问题。至少从另一个角度看，没有人尝试过说明这尚是一片蓝海，如果你尝试并且成功的话就会挂上“哇第一个用Haskell语言实现了XX的人”，说的好像其他类型糟糕输写毫无优雅的语言不能做到似的。</p>
+<p>我们先来看一个 Haskell 初学者会遇到的第一个可能问题，这个问题不是 Monad， 而是语言扩展, 比如在hs文件的开头加上类似的声明： {-# LANGUAGE UglyHaskell, BalaBala #-}， 你就可以使用 Haskell 98 标准之外的一些非常有用的功能。看上去十分美好不是吗！但是当你写多了你会发现，即便是你想写一个简单的诸如文件操作的东西，你都可能会在开头加上5到6个扩展。这意味着很多 Haskell 生态系统的必备功能实际上都不是语言标准的 inhabitant原住民。虽然你可以通过将扩展全部加在 cabal file的方式免去多个文件重复添加之苦，但是语言设计者何苦要把这些必备功能排除在标准之外呢？既然已经有了 Haskell 2010, 那又何必如此罗嗦？</p>
+<p>但其实我后来想想，这种设计是有道理的，虽然语言的设计者做这样的选择可能并不是依据我得出的理由。</p>
+<p>如果将大部分 Haskell 常用的 GADTs, RankNTypes，TypeSynonymInstances, ExistentialQuantification 等扩展直接写入GHC.Base的话，带来的问题是初学者可能会不知不觉地用上他们并不了解的事物。</p>
+<p>比如多重参数的类型类，比如返回类型并不为类型构造值本身的GADTs, 比如kind signature 并不是 * -&gt; * 的PolyKind。我就曾经在写 f :: * -&gt; * 这样的约束的时候，异想天开的想试试看如果写成 f :: t0 -&gt; t1 会怎么样，虽然我并不明白改成这样的后果。但是如果将所有的扩展都加入进去的话，编译器是不会爆出诸如 “Maybe you need PolyKind” 或者 “Maybe you means template Haskell” 这样的错误，而是一声不吭地纵容你往坑里跳。所以从好的方面想，编译器实际在提醒你别多生事，或者在鼓励你去看新的东西，发现更大的世界。</p>
+<p>但是这一切都让我感觉十分的，微妙。这个微妙在于，Haskell 与之前所有使用的语言不同。在之前的语言，比如 C++, Python, 如果你正在使用一个新的功能，你一定会知道“嗯，没错，我就是正在用这个功能”。因为在传统的编程语言中，大部分的功能特性的使用是通过关键字的声明实现的。你如果用了一个新的语言特性，你一定是用上了这个语言一个崭新的关键字。但是 Haskell 不同，即便是你只是改变了某个返回值的类型，或者在 typeclass 中多加个参数，等待你的都是另一份你没看过的 Haskell Wiki. 也许这就是初学者学习 haskell 的困难之一吧。</p>
+
+    </div>
+    <div class="post-epilogue container">
+        <div class="row">
+            
+                <div class="one-third column">
+                    <span>category</span>
+                    <div class="tag-list">
+                        
+                    </div>
+                </div>
+         
+        </div>
+    </div>
+    
+    <div class="comment-container container">
+        
+
+    </div>
+    
+</div>
+

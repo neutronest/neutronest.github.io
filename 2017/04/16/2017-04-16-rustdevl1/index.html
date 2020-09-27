@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!-- modified from pluskid's blog -->
+<!-- thanks pluskid.. -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Neutronest</title>
+    <meta name="author" content="Chaos ">
+    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
+    <!-- Mobile Specific Metas
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <!-- Google webfonts is almost not accessible from China, so we host locally -->
+    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
+    <!-- CSS
+         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css"> 
+    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="/css/customize.css">    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+
+<body>
+    <div class="page-header container">
+        <ul class="nav-left">
+            <li class="home"><a href="/about.html">λ neutronest . </a></li>
+            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
+            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
+            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
+            <li class="desktop-only"><a href="/archives">Archives</a></li>
+            <li class="desktop-only"><a href="">Resume</a></li>
+            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
+        </ul>
+
+        <ul class="nav-right">
+            <li><a href="">Github</a></li>
+            <li><a href="">Linkedin</a></li>
+            <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+
+        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
+    </div>
+
+
+<div class="post-container">
+    <div class="post-header">
+        <h2>地狱里的Rust （一）struct 设计机巧初步</h2>
+        <div class="post-meta">
+    <span><img src="/img/icon-calendar.svg" width="12px"> 2017-04-16</span>
+
+    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    
+</div>
+
+    </div>
+    <div class="post-content">
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>本篇文章旨在记录并讨论一下自己在最近 Rust 试水学习中所踩的坑以及 挖掘出的一些用来规避 memory system writing hell 的一些常见套路。</p>
+<p>我相信不止我一个人有这样的错觉，即尽管Rust 的文档不可谓不齐全，然而真正开始在生产环境使用的时候就会发现Rust 只有两处不太好用： 这也不好用，那也不好用。</p>
+<p>然而你还不能抱怨什么，在你尝试搜索 rust document 以及 stackoverflow 后，你恰好总能找到你问题的解决方案，尽管有些确实不那么漂亮。仿佛 Rust 语言的开发者始终将自己处在万人所指的被告席上，背后有强大的律师团为其背书：“xx你看，你觉得xx在Rust 不好实现并不是因为 Rust 本身的问题，而是你没有使用 / 尝试 Rust 的 xx 功能”。 尽管 Rust 完善的文档能够使她的开发者巧妙地逃脱每一次初学者的苛责，但是， 总有一些文档之外的问题是Rust初学者都会碰到，而这些问题尽管都可以在文档中找到答案，但是这些问题产生的根源以及为了解决问题所必须进行的思维方法的转换，Rust的开发者对此好像讳莫如深。也就是说，Rust 的文档仅仅能够起到头痛医头脚痛医脚的作用。 比如， Rust 提供了多种 mutable 的表达方法，包括 mut, &amp;mut, *mut, Rc, RefCell, Arc 等多个关键字供你使用。并且，Rust团队也贴心地准备了 “choose your guarantee” 这篇文章来详细描述到底这些关键字该怎么用。 然而诸如 &amp;mut self 传染， multivarible RefCell borrow, 以及 RefCell 的 borrow() 的 lifetime 冲突 等常见的初学者都会面临的困惑，你几乎很难找到任何一篇官方文档去指导你避免在这些坑中浪费时间。下面我就从 struct 结构设计， &amp;mut self 传染， Option / Result 的 match hell 等  topic 具体阐述一下这些坑是怎么来的，以及一些避过这些坑的探索方法。</p>
+<h2 id="struct-设计"><a href="#struct-设计" class="headerlink" title="struct 设计"></a>struct 设计</h2><p>如果你是拥有 python / Java / Haskell 经验的程序员，你一定不会为设计一个复杂 struct 拥有过多烦恼。比如 你有 struct A {name: String, id: usize} ， 然后你想设计一个结构体 B , 这个 B 不仅包含 id,name 等简单类型，也包含A， 那么，写成 struct B {a: A, name: String, id: usize} 是十分符合直觉的。 然而，如果你在 Rust 中这么设计，你就会在接下来的使用A B 的过程中遭了殃。 为什么 生成一个 A实例a,再将其赋予B的一个实例 b后， a 就不能用了？ 查查文档发现是 move 问题。于是你借这个机会开始对 Rust 的内存模型有了一个粗浅的认识。 那么对B的定义中，不将 A 的实体赋给B, 而是将引用赋给B可以吗？ 你很容易就写出一个 Struct B {a: &amp;’a A, …} 的设计来，其中 ‘a 表示生命周期。看起来问题似乎解决了。可是当你接到一个需求是 impl  struct A  的某些 update 方法，其中涉及到对A 的改变操作时，你也许就会发现一些拆东墙补西墙的问题。将A的地址赋予B，意味着你接下来很难有机会直接操作A, 因为对一块资源的操作的合法操作有两类，要么是多个不可变的引用，要么是单个可变引用。也就是，如果你在项目中一旦有了对某个已有结构体的一个小小 mutable 功能扩展，你可能要付出将该结构体定义甚至所有依赖该结构体的子结构体定义全部重写的巨大劳动。而这些劳动，说的好听是因为 Rust 将 reference 和 mut 不同的选项全部塞到了类型，参数和接口定义中，说的不好听（）是开发者在定义 struct 的时候压根就没想好，到底哪些字段是允许更改的，允许怎样的更改。哪些字段是允许 Clone / Copy 的，而这些细节是从 Python / Java 过来的程序员很难考虑到的。</p>
+<p>下面是一些设计依赖关系的struct 时，能够避免返工重新定义的一些可能有用的经验。</p>
+<p>先形式化问题： 当我们尝试定义 <code>struct B {a: foobar&lt;A&gt;...}</code> 时 这里的 foobar 到底是怎样才合适。 可选的答案有 <code>A /  &amp;&#39;A / Rc&lt;A&gt; / Rc&lt;RefCell&lt;A&gt;&gt;  Option&lt;Rc&lt;RefCell&lt;&lt;A&gt;&gt;&gt; / *mut A / Option&lt;*mut A&gt; ...</code> 等等。</p>
+<p>1、一个原则是尽量避免 consume 风格的字段定义和 struct 方法定义。</p>
+<p>你可能在Rust的很多官方类型中看到 consume 风格的方法。比如 Option 的 unwrap, take, RefCell 的 into_inner 。 这些方法都有着一个统一的特征，就是他们都是一次性把外面的壳（Option, RefCell 之类的）扔掉，把里面的值取出来。你再想放回壳里就放不回原壳里了（壳子的地址没了），即便放回去那也是个新壳。 然而在 struct 中我们往往有字段数据在内存中持久化的需要，我们不希望一个 实例其中一个 field, 我们用了一次它就废掉了。 类似的思想也包括不支持Copy/Clone 的结构体传递。我们在定义和使用 struct 时，往往要小心翼翼（严格使用 match, if let 等套路），轻拿轻放（通过 <code>Some(ref xx)</code> 的方法以引用风格提取里面的值，确保里面的值不被move , 以及外面的wrapper 持久存在）。 因此尽量避免 a: A 这样直截了当的定义，除非 A 与 B 具有某种强相关， 对A的操作会且仅会通过B.A 的方式来实现。否则还是传递某种引用吧。至于倒底使用哪类引用，会在下面继续讨论。</p>
+<p>2、 一个大结构体里的 非 Clone / Copy primitive字段尽量使用 RefCell 等支持 interior mutable 的壳子包裹起来。</p>
+<p>这里也是一个比较惨痛的教训。什么叫大结构体呢？ 举个 golang 的例子：</p>
+<p>`</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// DB is a LevelDB database.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> DB <span class="keyword">struct</span> &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Need 64-bit alignment.</span></span><br><span class="line">seq <span class="keyword">uint64</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Session.</span></span><br><span class="line">s *session</span><br><span class="line"></span><br><span class="line"><span class="comment">// MemDB.</span></span><br><span class="line">memMu           sync.RWMutex</span><br><span class="line">memPool         <span class="keyword">chan</span> *memdb.DB</span><br><span class="line">mem, frozenMem  *memDB</span><br><span class="line">journal         *journal.Writer</span><br><span class="line">journalWriter   storage.Writer</span><br><span class="line">journalFd       storage.FileDesc</span><br><span class="line">frozenJournalFd storage.FileDesc</span><br><span class="line">frozenSeq       <span class="keyword">uint64</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Snapshot.</span></span><br><span class="line">snapsMu   sync.Mutex</span><br><span class="line">snapsList *list.List</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+
+<p>里面的字段还没定义完..</p>
+<p>一般来说，一个结构体里包含超过2个子struct 时， 这样的结构体我们就可以称之为大结构体了。</p>
+<p>由于 Rust 的 mutable 特性， 一个结构体在使用的时候，要么全体 fields 全部 immutable, 要么全部 mutable, 也就是不支持 partial mutable field (这里个人认为是某种缺陷)。因此，考虑到生产环境功能迭代，为了不出现因为一个小小字段添加了mutable update operation 就将过程中的 所有 struct 实例，以及包裹这类 struct 的实例全部变成 mut 的惨状, 请善加运用 interior mutable 特性。哪怕是一些 id: usize 这样的小字段，保险起见也用 <code>id: RefCell&lt;usize&gt;</code> 这样支持可变的壳包起来，省得之后类型定义大返工。（这里实际上涉及到了两个之后想说明的问题，一个是 方法定义时的 &amp;mut self 污染， 另一个是 RefCell, Cell, Rc 这几类 pointer 的选取问题。）</p>
+<p>倾向使用 RefCell 实际上也有谨慎使用 exterior mutable 的意思在里面。</p>
+<p>3、RefCell, Rc, Cell 等  pointer 的选择问题</p>
+<p>在这里首先还是要推荐官方的文档：<a href="https://doc.rust-lang.org/book/choosing-your-guarantees.html" target="_blank" rel="noopener">choosing your guarantee</a> 算是比较详细地描述了各类 wrapper type 的特点和选择。简单来说，这些 wrapper type 根据是否支持 mutable, 其 wrapper 类型是否一定要Copy/Clone 做了限定区分，这里暂时先不考虑多线程的问题。</p>
+<p>个人认为其中最常用的还是 <code>RefCell&lt;T&gt;</code>, 因为其支持 非 Copy/Clone 的 mutable 的特性。充其量再加上 <code>Rc&lt;RefCell&lt;T&gt;&gt;</code> 的添加引用计数的特性，尤其是在 struct 定义中。为什么呢？因为 你并不能保证在 struct 中的任意一个字段永远都是不可变的，或者 支持 Copy / Clone 与否，除非是那些实现底层数据结构的，算法几十年不会变的 struct 。如果从这个角度出发， 那么<code>Cell</code>直接被淘汰。<code>Rc</code>往往不直接使用，而是与  <code>RefCell</code> 一起配合使用。<code>*mut</code>  这个 raw pointer 在实现一些底层算法时也经常用，不过 unsafe {*mut wi♡ fe} 一时爽， invalid memory reference 火葬场，个人惨痛教训，引以为戒。<code>Box&lt;T&gt;</code> 这个类型往往不参与结构体的定义（<a href="https://play.rust-lang.org/?gist=414a9b729b77882bbb12ca804cc53558&version=stable&backtrace=0" target="_blank" rel="noopener">linkedlist 实现</a>  啪啪打脸，但我还是坚持自己的观点， 除非你的数据结构只 new 不 update），而是在程序的 logic flow 中充当 trait object wrapper 使用。 </p>
+<h2 id="amp-mut-self-污染"><a href="#amp-mut-self-污染" class="headerlink" title="&amp;mut self 污染"></a>&amp;mut self 污染</h2><p>还是沿用之前的 Struct A, B 例子。考虑如下情况：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">A</span></span>&lt;T&gt; &#123;</span><br><span class="line">	id: <span class="built_in">String</span>,</span><br><span class="line">	    value: T,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">B</span></span>&lt;T&gt; &#123;</span><br><span class="line">	a: A,</span><br><span class="line">	id: <span class="built_in">String</span>,</span><br><span class="line">	value: T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; A&lt;T&gt; &#123;</span><br><span class="line">	<span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>(&amp;<span class="keyword">self</span>) -&gt; T &#123;</span><br><span class="line">		...	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; B&lt;T&gt; &#123;</span><br><span class="line">	<span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>(&amp;<span class="keyword">self</span>) -&gt; T &#123;</span><br><span class="line">	    <span class="keyword">let</span> temp_v = <span class="keyword">self</span>.a.foo();</span><br><span class="line">		...	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这一节，我们从 &amp;mut self 污染扩散问题，侧面讨论一下 struct 设计的另一个小原则： 结构体的方法定义尽量不包含 exterior mutable.</p>
+<p>看上面的例子。我们知道，在为结构体设计方法的时候，如果该方法不涉及到 mut 操作， 那么 getter类方法 使用 <code>&amp;self</code> 而不是 <code>&amp;mut self</code> 表示本身是符合常规的。例子中的结构体 A 和 B 的 foo 方法都是使用的 <code>&amp;self</code>。这时，如果我们接到了某个PM的新需求，在实现的过程中我们需要在 a.foo() 中对 a 做一些 mutable 改变。最简单的方法是 直接将 struct A 里面的 foo 方法里面的参数 &amp;self 改为 &amp;mut self。</p>
+<p>以为一切都结束了吗？编译程序会发现此时 B.foo() 方法会报 immutable borrow 冲突问题。 为什么一个对 A.foo() 的小小改变会影响到 B? 看代码我们会发现 B.foo  中有这么一句： <code>let temp_v = self.a.foo()</code> 这里由于 self 是 immutable 的，因此 self.a 也是immutable 的。在原来的程序中不会出问题。可是现在我们将 A.foo() 里的 self 定义成 mut ， 因此为了编译通过， mut 需要传递给她的上级， 也就是说， 为了使 B.a 是 mut 的， B 本身也得是 mut 的。于是我们只得把 B.foo() 的参数定义也改成 &amp;mut self 。</p>
+<p>看到了吗？一个 struct 的方法参数的改变，竟然影响到了该 struct 的上级而迫使其发生改变。这是一个十分糟糕的情况。理论来说，不同结构体的方法定义不应该有强关联，而应该是解藕的。 而在该例子中， 由于 Rust 对 mut 特性的定义，出现了反常的实现情况。最糟糕的情况，在一个大型项目中，比方说有 db.skiplist.skipnode.wife 这样的属性。上述的实现就有可能出现 由于 wife 字段的 mutable 改变迫使上面三层 struct 的接口全部重新定义的惨烈情况。</p>
+<p>上述问题我个人称作是 &amp;mut self 污染传递。解决它的方案也很简单，就是在结构体的getter类方法定义时，尽力使用 interior mutable, 将所有可能 mut 的字段用 wrapper 包起来，在外层借口参数定义时一律使用 &amp;self。 这也是鼓励使用 RefCell 等 wrapper type 的另一个佐证。</p>
+<h2 id="conclusion"><a href="#conclusion" class="headerlink" title="conclusion"></a>conclusion</h2><p>本文重点讨论了 Rust 中 开发人员定义 struct 的常见问题。其核心就是： 1、尽量使用 interior mutable 代替 exterior mutable 2、使用 可变+引用计数的 wrapper 包裹自定义的 struct 。 这样虽然在使用的时候需要一层一层往外拆十分麻烦，但是保证在功能迭代时不会出现因为 mutable 的变化而迫使类型字段和方法参数重新定义的情况。</p>
+<p>但是，这样做也是就代价的，其中之一就是 match / if let hell。考虑一个中等复杂的结构体，由于 RefCell 的使用常常伴随着 try_borrow_mut() 等需要 unwrap 的方法。 每一次 unwrap, 常规的写法都是 使用 <code>match { if let Some(xxx) / Ok(xx) = foobar {}  }</code> 这种多层嵌套的方式。 当出现需要同时对多个 RefCell 进行 unwrap 的时候，由于不同的 wrapper 彼此独立，unwrap 需要线性先后执行，就会出现多层较深的 match / if let 嵌套。 这给代码的整洁以及逻辑的理解带来的较大的问题。此外，当 RefCell 的解构 与循环结构 结合起来的时候，就会出现“需要特别的姿势才能实现某些特定功能”的情况。这些在之后的文章会深入探讨，如果我找到了解决方案的话。</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p>[1]、 <a href="https://doc.rust-lang.org/book/mutability.html" target="_blank" rel="noopener">Mutability</a></p>
+<p>[2]、 <a href="https://doc.rust-lang.org/book/choosing-your-guarantees.html" target="_blank" rel="noopener">Choosing your guarantee</a></p>
+<p>[3]、<a href="https://ricardomartins.cc/2016/06/08/interior-mutability" target="_blank" rel="noopener">Interior mutability in Rust: what, why, how? </a> (强烈推荐这个系列)</p>
+<p>[4]、<a href="http://words.steveklabnik.com/pointers-in-rust-a-guide" target="_blank" rel="noopener">Pointers in Rust: a guide</a> (注意这篇文章的 @, ～ 指针已经过时了，被 <code>Box&lt;T&gt;</code> 代替。但是仍然不失为一篇好文章)</p>
+<p>[5]、<a href="https://play.rust-lang.org/?gist=414a9b729b77882bbb12ca804cc53558&version=stable&backtrace=0" target="_blank" rel="noopener">an linkedlist implementation by Rust</a></p>
+<h2 id="场外应援"><a href="#场外应援" class="headerlink" title="场外应援"></a>场外应援</h2><p><code>Shared&lt;T&gt;</code> 是啥指针？ 好吃吗？</p>
+
+    </div>
+    <div class="post-epilogue container">
+        <div class="row">
+            
+                <div class="one-third column">
+                    <span>category</span>
+                    <div class="tag-list">
+                        
+                    </div>
+                </div>
+         
+        </div>
+    </div>
+    
+    <div class="comment-container container">
+        
+
+    </div>
+    
+</div>
+
