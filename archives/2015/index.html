@@ -1,198 +1,385 @@
 <!DOCTYPE html>
-<!-- modified from pluskid's blog -->
-<!-- thanks pluskid.. -->
-<html lang="en">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Neutronest</title>
-    <meta name="author" content="Chaos ">
-    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
-    <!-- Mobile Specific Metas
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- FONT
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <!-- Google webfonts is almost not accessible from China, so we host locally -->
-    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
-    <!-- CSS
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/skeleton.css"> 
-    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
-    <link rel="stylesheet" href="/css/customize.css">    
-<meta name="generator" content="Hexo 4.2.1"></head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="keywords" content="hexo, autumn" />
+    <title>
+        Neutronest
+    </title>
+    <!-- favicon -->
+    
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/favicon.ico" />
+     
+<link rel="stylesheet" href="/css/style.css">
 
 
+    <!-- highlight -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/github-gist.min.css" />
+    <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad()
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-infinite-scroll@2.0.0/dist/main.js"></script>
 
-<body>
-    <div class="page-header container">
-        <ul class="nav-left">
-            <li class="home"><a href="/about/about.html">λ neutronest . </a></li>
-            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
-            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
-            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
-            <li class="desktop-only"><a href="/archives">Archives</a></li>
-            <li class="desktop-only"><a href="">Resume</a></li>
-            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
+    <script>
+        infiniteScroll()
+
+        window.addEventListener('DOMContentLoaded', function () {
+            const [
+                mainTitle,
+                mobileMenu,
+                mobileMainTitle,
+                mobileMenuBtn,
+                ipadMenuBtn,
+                aside,
+                closeBtn,
+            ] = getEle(
+                '#main-title',
+                '.mobile-menu',
+                '.mobile-menu h3',
+                '.mobile-menu button',
+                '.ipad-menu',
+                'aside',
+                'aside .close',
+            )
+            const io = new IntersectionObserver(entries => {
+                if (entries[0].intersectionRatio <= 0) {
+                    mobileMainTitle.classList.remove('invisibile')
+                } else {
+                    mobileMainTitle.classList.add('invisibile')
+                }
+            })
+            io.observe(mainTitle)
+
+            clickToggleAside(mobileMenuBtn)
+            clickToggleAside(ipadMenuBtn)
+            clickToggleAside(closeBtn, false)
+
+            const isMenuVisible = window.getComputedStyle(mobileMenu).display !== 'none'
+            if (isMenuVisible) document.body.style.background = 'none'
+
+            function getEle(...args) {
+                return args.map(arg => document.querySelector(arg))
+            }
+
+            function clickToggleAside(btn, show = true) {
+                btn.addEventListener('click', function () {
+                    if (show) {
+                        aside.style.display = 'block'
+                    } else {
+                        aside.style.display = 'none'
+                    }
+                })
+            }
+        })
+    </script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Neutronest" type="application/atom+xml">
+</head>
+
+<body style="background: url(https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/button-bg.png) #f3f3f3">
+    <div class="container">
+        <header class="header">
+    <nav class="mobile-menu" style="background: url(https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/button-bg.png) #f3f3f3">
+        <h3 class="invisibile">
+            <a href="/" class="logo">
+                Neutronest
+            </a>
+        </h3>
+        <button class="menu">menu</button>
+    </nav>
+
+    <button class="ipad-menu menu">menu</button>
+
+    <h1 class="title" id="main-title">
+        <a href="/" class="logo">
+            Neutronest
+        </a>
+    </h1>
+    <h2 class="desc">
+        
+    </h2>
+
+    <div class="links">
+        <ul>
+            
+            <li>
+                <a href="https://github.com/neutronest" target="_blank" rel="noopener">
+                    Github
+                </a>
+            </li>
+            
+            <li>
+                <a href="/null">
+                    About
+                </a>
+            </li>
+            
         </ul>
-
-        <ul class="nav-right">
-            <li><a href="">Github</a></li>
-            <li><a href="">Linkedin</a></li>
-            <li><a href="/atom.xml">RSS</a></li>
-        </ul>
-
-        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
     </div>
-
-
-    
-    
-        
-        
+</header>
+        <main class="main">
             
+<section class="posts">
+    
+        <article class="post">
             
-            <div id="blog-archives" class="container">
-                <h2>2015</h2>
+                <h4 class="post-cat">
+                    <a href="/categories/liberalart/">
+                        liberalart
+                    </a>
+                </h4>
                 
-        
-        <!-- each article item -->
-        <article>
-            <h1>
-                <a href="/2015/12/10/2015-12-10-akihabara-rain/">
-                    秋叶原之雨
-                </a>
-            </h1>
-            <time>12 10th</time>
-            <footer>
-                <span class="categories">
-                    posted in <a class="none-link" href="/categories/liberalart/">liberalart</a>
-                </span>
-            </footer>
+                    <h1 class="post-title">
+                        <a href="/2015/12/10/2015-12-10-akihabara-rain/">
+                            秋叶原之雨
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            December 10, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                    <div class="post-content ">
+                        
+                            <a href="/2015/12/10/2015-12-10-akihabara-rain/" class="more-link">Continue reading</a>
+                    </div>
         </article>
-    
         
-        
-        <!-- each article item -->
-        <article>
-            <h1>
-                <a href="/2015/11/15/2015-11-15-LSTM-survey/">
-                    LSTM in depth
-                </a>
-            </h1>
-            <time>11 15th</time>
-            <footer>
-                <span class="categories">
-                    posted in <a class="none-link" href="/categories/tech/">tech</a>
-                </span>
-            </footer>
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/tech/">
+                        tech
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2015/11/15/2015-11-15-LSTM-survey/">
+                            LSTM in depth
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            November 15, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                        <div class="post-cover">
+                            <img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/LSTM-in-depth/%202015-11-15%2012.43.33_zpsbcdry6o9.png">
+                        </div>
+                    
+                    <div class="post-content ">
+                        
+                            <a href="/2015/11/15/2015-11-15-LSTM-survey/" class="more-link">Continue reading</a>
+                    </div>
         </article>
-    
         
-        
-        <!-- each article item -->
-        <article>
-            <h1>
-                <a href="/2015/11/11/2015-11-11-christmasshoujiu/">
-                    人间失格な圣诞少女
-                </a>
-            </h1>
-            <time>11 11th</time>
-            <footer>
-                <span class="categories">
-                    posted in <a class="none-link" href="/categories/novel/">novel</a>
-                </span>
-            </footer>
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/novel/">
+                        novel
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2015/11/11/2015-11-11-christmasshoujiu/">
+                            人间失格な圣诞少女
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            November 11, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                    <div class="post-content ">
+                        
+                            <a href="/2015/11/11/2015-11-11-christmasshoujiu/" class="more-link">Continue reading</a>
+                    </div>
         </article>
-    
         
-        
-        <!-- each article item -->
-        <article>
-            <h1>
-                <a href="/2015/11/04/2015-11-03-kyoto1/">
-                    京都印象·吉田寮探险回忆
-                </a>
-            </h1>
-            <time>11 4th</time>
-            <footer>
-                <span class="categories">
-                    posted in <a class="none-link" href="/categories/liberalart/">liberalart</a>
-                </span>
-            </footer>
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/liberalart/">
+                        liberalart
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2015/11/04/2015-11-03-kyoto1/">
+                            京都印象·吉田寮探险回忆
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            November 4, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                        <div class="post-cover">
+                            <img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/MLSS/IMG_20150905_155103_zpsqdmjhagh.jpg">
+                        </div>
+                    
+                    <div class="post-content ">
+                        
+                            <a href="/2015/11/04/2015-11-03-kyoto1/" class="more-link">Continue reading</a>
+                    </div>
         </article>
-    
         
-        
-        <!-- each article item -->
-        <article>
-            <h1>
-                <a href="/2015/04/25/2015-04-25-class-system/">
-                    关于班级社会系统与校园霸凌的存在必然性论证
-                </a>
-            </h1>
-            <time>04 25th</time>
-            <footer>
-                <span class="categories">
-                    posted in <a class="none-link" href="/categories/liberalart/">liberalart</a> <a class="none-link" href="/categories/liberalart/article/">article</a>
-                </span>
-            </footer>
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/liberalart/">
+                        liberalart
+                    </a>
+                </h4>
+                
+                <h4 class="post-cat">
+                    <a href="/categories/liberalart/article/">
+                        article
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2015/04/25/2015-04-25-class-system/">
+                            关于班级社会系统与校园霸凌的存在必然性论证
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            April 25, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                    <div class="post-content ">
+                        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>最近在补《我的青春恋爱物语果然有问题》，本来以为是一个温馨的日常向的番，结果却看出了一阵寒意。该番是披着日常系的外壳来反映校园霸凌以及同学之间微妙的牵制与被牵制关系的现实主义作品。作者对校园生活的观察以及对同学关系本质的思考非常深刻，这就引发了我对校园生活的残想。</p>
+<p>至少是在日本，“いじめ”（即校园霸凌）的现象十分严重。这与植根与其深处的集体主义国民性是分不开的。当一个人在班里遭到了欺负时，大家的反应往往不是仗义出手而是见风使舵。因为大家终于可以松一口气了，被霸凌的命运不会出现在自己身上了。自己只要跟风去欺负他就能保障自己的安全。很有意思的是，在“班集体”这样一个种群系统中，你总会发现一个“处在食物链底端”的人，你不用关心他是谁，因为是谁都无所谓。他所扮演的“被霸凌”的角色同时也为提升整个集体的安全感做出了贡献（因为其他人都松了口气）。而更为有意思的是，那位被霸凌的同学往往还会反思是不是自己哪里不够好，是不是自己身上出了问题。为什么别人不欺负别人却都来欺负我呢？ 殊不知如果他退学或是转学的话，第二个替罪羊总会出现的，因为大家需要一个这样的角色。而作为整个种群系统的管理者——老师，也往往会认为问题出在那个被欺负的同学身上。因为比起解决那N-1个同学的心理问题，解决一个人的问题至少看上去是容易得多的。</p>
+                            <a href="/2015/04/25/2015-04-25-class-system/" class="more-link">Continue reading</a>
+                    </div>
         </article>
-    
         
-        
-        <!-- each article item -->
-        <article>
-            <h1>
-                <a href="/2015/03/22/2015-03-21-clause-learning/">
-                    关于Clause learning
-                </a>
-            </h1>
-            <time>03 22nd</time>
-            <footer>
-                <span class="categories">
-                    posted in <a class="none-link" href="/categories/tech/">tech</a>
-                </span>
-            </footer>
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/tech/">
+                        tech
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2015/03/22/2015-03-21-clause-learning/">
+                            关于Clause learning
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            March 22, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                        <div class="post-cover">
+                            <img src="http://i890.photobucket.com/albums/ac103/neutronest/%202015-03-22%2012.20.49_zpsw9pn56mc.png">
+                        </div>
+                    
+                    <div class="post-content ">
+                        <h2 id="什么是-clause-learning"><a href="#什么是-clause-learning" class="headerlink" title="什么是 clause learning"></a>什么是 clause learning</h2><p>Clause learning 是我今天晚上从实验室回家的时候想到的一个对法律条文进行机器学习的一个学习模型。</p>
+                            <a href="/2015/03/22/2015-03-21-clause-learning/" class="more-link">Continue reading</a>
+                    </div>
         </article>
-    
         
-        
-        <!-- each article item -->
-        <article>
-            <h1>
-                <a href="/2015/01/12/2015-01-12-bayesian-occam-razor/">
-                    Bayesian Occam Razor
-                </a>
-            </h1>
-            <time>01 12th</time>
-            <footer>
-                <span class="categories">
-                    posted in <a class="none-link" href="/categories/machinelearning/">machinelearning</a>
-                </span>
-            </footer>
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/machinelearning/">
+                        machinelearning
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2015/01/12/2015-01-12-bayesian-occam-razor/">
+                            Bayesian Occam Razor
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            January 12, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                        <div class="post-cover">
+                            <img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534842709_zpsd14c32b8.png">
+                        </div>
+                    
+                    <div class="post-content ">
+                        <h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p>问题1：</p>
+<p>请看如下图片。在图片中那些灰色的，黑灰色的，以及黑色的均是box。现在考虑图片中被树挡住的部分，请问被树挡住的有几个box?</p>
+<p><a href="http://s890.photobucket.com/user/neutronest/media/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534842709_zpsd14c32b8.png.html" target="_blank"><img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534842709_zpsd14c32b8.png" border="0" alt=" photo 5C4F5E555FEB71672015-01-124E0B534842709_zpsd14c32b8.png"/></a></p>
+<p>你会选择1个， 还是2个？</p>
+                            <a href="/2015/01/12/2015-01-12-bayesian-occam-razor/" class="more-link">Continue reading</a>
+                    </div>
         </article>
-    
-    
-            </div>
+        
+</section>
+
+        </main>
+        <aside class="aside">
+            <div class="close"></div>
+            <section class="aside-section">
+                
+    <h1>Categories</h1>
+
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/animation/">animation</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/article/liberal-art/">liberal-art</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/liberalart/">liberalart</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/liberalart/article/">article</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/machinelearning/">machinelearning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/novel/">novel</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/storm/">storm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/storm/industry/">industry</a></li></ul></li></ul></li></ul>
+
+            </section>
+            <section class="aside-section">
+                
+    <h1>Archives</h1>
+
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/">2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/">2014</a></li></ul>
+
+
+            </section>
+            <section class="aside-section tag">
+                
+    <h1>Tags</h1>
+
     
 
-<div class="index-pagination" role="pagination">
-    
-    
-</div>
-
-<div id="post-epilogue" class="container">
-    <div class="separator"></div>
-    <div class="archive-link">
-        <center><a href="/archives">— Blog Archives —</a></center>
+            </section>
+        </aside>
     </div>
-    <div class="separator"></div>
-</div>
-<div class="copyright">
-    Copyright © neutronest & Chiyuan Zhang 2012-2016 — Powered by Hexo
-</div>
 </body>
-</html>
 
+</html>

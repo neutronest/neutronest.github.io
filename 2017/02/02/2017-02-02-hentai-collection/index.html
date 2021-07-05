@@ -1,63 +1,145 @@
 <!DOCTYPE html>
-<!-- modified from pluskid's blog -->
-<!-- thanks pluskid.. -->
-<html lang="en">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Neutronest</title>
-    <meta name="author" content="Chaos ">
-    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
-    <!-- Mobile Specific Metas
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- FONT
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <!-- Google webfonts is almost not accessible from China, so we host locally -->
-    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
-    <!-- CSS
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/skeleton.css"> 
-    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
-    <link rel="stylesheet" href="/css/customize.css">    
-<meta name="generator" content="Hexo 4.2.1"></head>
-
-
-
-<body>
-    <div class="page-header container">
-        <ul class="nav-left">
-            <li class="home"><a href="/about/about.html">λ neutronest . </a></li>
-            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
-            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
-            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
-            <li class="desktop-only"><a href="/archives">Archives</a></li>
-            <li class="desktop-only"><a href="">Resume</a></li>
-            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
-        </ul>
-
-        <ul class="nav-right">
-            <li><a href="">Github</a></li>
-            <li><a href="">Linkedin</a></li>
-            <li><a href="/atom.xml">RSS</a></li>
-        </ul>
-
-        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
-    </div>
-
-
-<div class="post-container">
-    <div class="post-header">
-        <h2>HHHentaiCollection☆!!! —— 一个ML数据集的设想</h2>
-        <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2017-02-02</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="keywords" content="hexo, autumn" />
+    <title>
+        Neutronest
+    </title>
+    <!-- favicon -->
     
-</div>
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/favicon.ico" />
+     
+<link rel="stylesheet" href="/css/style.css">
 
+
+    <!-- highlight -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/github-gist.min.css" />
+    <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad()
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-infinite-scroll@2.0.0/dist/main.js"></script>
+
+    <script>
+        infiniteScroll()
+
+        window.addEventListener('DOMContentLoaded', function () {
+            const [
+                mainTitle,
+                mobileMenu,
+                mobileMainTitle,
+                mobileMenuBtn,
+                ipadMenuBtn,
+                aside,
+                closeBtn,
+            ] = getEle(
+                '#main-title',
+                '.mobile-menu',
+                '.mobile-menu h3',
+                '.mobile-menu button',
+                '.ipad-menu',
+                'aside',
+                'aside .close',
+            )
+            const io = new IntersectionObserver(entries => {
+                if (entries[0].intersectionRatio <= 0) {
+                    mobileMainTitle.classList.remove('invisibile')
+                } else {
+                    mobileMainTitle.classList.add('invisibile')
+                }
+            })
+            io.observe(mainTitle)
+
+            clickToggleAside(mobileMenuBtn)
+            clickToggleAside(ipadMenuBtn)
+            clickToggleAside(closeBtn, false)
+
+            const isMenuVisible = window.getComputedStyle(mobileMenu).display !== 'none'
+            if (isMenuVisible) document.body.style.background = 'none'
+
+            function getEle(...args) {
+                return args.map(arg => document.querySelector(arg))
+            }
+
+            function clickToggleAside(btn, show = true) {
+                btn.addEventListener('click', function () {
+                    if (show) {
+                        aside.style.display = 'block'
+                    } else {
+                        aside.style.display = 'none'
+                    }
+                })
+            }
+        })
+    </script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Neutronest" type="application/atom+xml">
+</head>
+
+<body style="background: url(https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/button-bg.png) #f3f3f3">
+    <div class="container">
+        <header class="header">
+    <nav class="mobile-menu" style="background: url(https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/button-bg.png) #f3f3f3">
+        <h3 class="invisibile">
+            <a href="/" class="logo">
+                Neutronest
+            </a>
+        </h3>
+        <button class="menu">menu</button>
+    </nav>
+
+    <button class="ipad-menu menu">menu</button>
+
+    <h1 class="title" id="main-title">
+        <a href="/" class="logo">
+            Neutronest
+        </a>
+    </h1>
+    <h2 class="desc">
+        
+    </h2>
+
+    <div class="links">
+        <ul>
+            
+            <li>
+                <a href="https://github.com/neutronest" target="_blank" rel="noopener">
+                    Github
+                </a>
+            </li>
+            
+            <li>
+                <a href="/null">
+                    About
+                </a>
+            </li>
+            
+        </ul>
     </div>
+</header>
+        <main class="main">
+            <article class="post">
+    
+    
+    <h4 class="post-cat">
+        <a href="/categories/tech/">
+            tech
+        </a>
+    </h4>
+    
+    
+    <h2 class="post-title">
+        HHHentaiCollection☆!!! —— 一个ML数据集的设想
+    </h2>
+    <ul class="post-date">
+        <li>
+            2017-02-02
+        </li>
+        <li>
+            Chaos
+        </li>
+    </ul>
     <div class="post-content">
         <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>机器学习以及应用已经成为了当今最为流行的话题之一。一些重要的探索性项目如AlphaGo, 无人车等都依赖着机器学习模型作为其基础设置做支撑。机器学习光有模型是远远不够的，还需要有足够用于其训练的数据—— 我们称之为数据集。  然而我们知道目前常见的机器学习任务细分数量多而驳杂，即便只是 narrow 到文本与图像方面，也会包括但不限于情感分析，机器翻译，摘要生成，对话生成，上下文对话分类，图像识别，图像生成，看图说话等多个子领域。这其中每一个领域的研究与应用，都需要一一收集相应的数据。这就使得数据的采集和处理工作变得十分冗余和繁琐。目前已公开的知名数据集如 MNIST, IMAGENET 是图像相关的，而诸如 swda 等数据集则 cover 了情感分析等文本方面的数据。但是这些都是零散的，不一体化的。研究者如果需要处理某些交叉性质的任务，比如看图说话，也许就需要自己手动收集新的数据，十分的辛苦。</p>
 <p>那么，有没有可能存在某些实际的 application data, 它既包含丰富的文本信息，也涵盖了海量的图像信息；它的所包括的文本最好是多语言的，这样可以做多语言翻译；它的语言最好是生活化的，带有情感的，这样可以做情感分析和自然语言生成；它的图像最好是自带tag标注的，这样我们可以轻松地应用到图像分类中；它的图像希望也包括一些连续变换的信息，这样或许可以应用到图像的插值生成等任务；它的图像或许还包含了不同的生活化风格，这样就可以拿来做neutral style 等任务中；如果它的图像有文字对应那就更好了，我们还可以拿它来做看图说话。能够满足如此之多任务需要的天然数据平台真的存在吗？答案是肯定的，就是 E-Hentai  (<a href="http://e-hentai.org/" target="_blank" rel="noopener">http://e-hentai.org/</a>) 。</p>
@@ -96,23 +178,34 @@
 <p>我们对数据集的采集与标注是 fine-grained &amp; coarse-grained 并存的。我们不仅会维护同一个作品内图片彼此之间的关系，还会维护那些 同一title翻译成不同语言的作品集合，以及那些由同一作者产出的作品集合，以供机器翻译和 style 识别&amp;转换 等任务的使用。</p>
 
     </div>
-    <div class="post-epilogue container">
-        <div class="row">
-            
-                <div class="one-third column">
-                    <span>category</span>
-                    <div class="tag-list">
-                        
-                    </div>
-                </div>
-         
-        </div>
-    </div>
-    
-    <div class="comment-container container">
-        
+</article>
+        </main>
+        <aside class="aside">
+            <div class="close"></div>
+            <section class="aside-section">
+                
+    <h1>Categories</h1>
 
-    </div>
-    
-</div>
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/animation/">animation</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/article/liberal-art/">liberal-art</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/liberalart/">liberalart</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/liberalart/article/">article</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/machinelearning/">machinelearning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/novel/">novel</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/storm/">storm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/storm/industry/">industry</a></li></ul></li></ul></li></ul>
 
+            </section>
+            <section class="aside-section">
+                
+    <h1>Archives</h1>
+
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/">2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/">2014</a></li></ul>
+
+
+            </section>
+            <section class="aside-section tag">
+                
+    <h1>Tags</h1>
+
+    
+
+            </section>
+        </aside>
+    </div>
+</body>
+
+</html>

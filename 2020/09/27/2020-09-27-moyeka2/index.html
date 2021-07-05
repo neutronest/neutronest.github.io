@@ -1,63 +1,151 @@
 <!DOCTYPE html>
-<!-- modified from pluskid's blog -->
-<!-- thanks pluskid.. -->
-<html lang="en">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Neutronest</title>
-    <meta name="author" content="Chaos ">
-    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
-    <!-- Mobile Specific Metas
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- FONT
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <!-- Google webfonts is almost not accessible from China, so we host locally -->
-    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
-    <!-- CSS
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/skeleton.css"> 
-    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
-    <link rel="stylesheet" href="/css/customize.css">    
-<meta name="generator" content="Hexo 4.2.1"></head>
-
-
-
-<body>
-    <div class="page-header container">
-        <ul class="nav-left">
-            <li class="home"><a href="/about/about.html">λ neutronest . </a></li>
-            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
-            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
-            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
-            <li class="desktop-only"><a href="/archives">Archives</a></li>
-            <li class="desktop-only"><a href="">Resume</a></li>
-            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
-        </ul>
-
-        <ul class="nav-right">
-            <li><a href="">Github</a></li>
-            <li><a href="">Linkedin</a></li>
-            <li><a href="/atom.xml">RSS</a></li>
-        </ul>
-
-        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
-    </div>
-
-
-<div class="post-container">
-    <div class="post-header">
-        <h2>奔跑吧！摩耶花 其二</h2>
-        <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2020-09-27</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="keywords" content="hexo, autumn" />
+    <title>
+        Neutronest
+    </title>
+    <!-- favicon -->
     
-</div>
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/favicon.ico" />
+     
+<link rel="stylesheet" href="/css/style.css">
 
+
+    <!-- highlight -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/github-gist.min.css" />
+    <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad()
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-infinite-scroll@2.0.0/dist/main.js"></script>
+
+    <script>
+        infiniteScroll()
+
+        window.addEventListener('DOMContentLoaded', function () {
+            const [
+                mainTitle,
+                mobileMenu,
+                mobileMainTitle,
+                mobileMenuBtn,
+                ipadMenuBtn,
+                aside,
+                closeBtn,
+            ] = getEle(
+                '#main-title',
+                '.mobile-menu',
+                '.mobile-menu h3',
+                '.mobile-menu button',
+                '.ipad-menu',
+                'aside',
+                'aside .close',
+            )
+            const io = new IntersectionObserver(entries => {
+                if (entries[0].intersectionRatio <= 0) {
+                    mobileMainTitle.classList.remove('invisibile')
+                } else {
+                    mobileMainTitle.classList.add('invisibile')
+                }
+            })
+            io.observe(mainTitle)
+
+            clickToggleAside(mobileMenuBtn)
+            clickToggleAside(ipadMenuBtn)
+            clickToggleAside(closeBtn, false)
+
+            const isMenuVisible = window.getComputedStyle(mobileMenu).display !== 'none'
+            if (isMenuVisible) document.body.style.background = 'none'
+
+            function getEle(...args) {
+                return args.map(arg => document.querySelector(arg))
+            }
+
+            function clickToggleAside(btn, show = true) {
+                btn.addEventListener('click', function () {
+                    if (show) {
+                        aside.style.display = 'block'
+                    } else {
+                        aside.style.display = 'none'
+                    }
+                })
+            }
+        })
+    </script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Neutronest" type="application/atom+xml">
+</head>
+
+<body style="background: url(https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/button-bg.png) #f3f3f3">
+    <div class="container">
+        <header class="header">
+    <nav class="mobile-menu" style="background: url(https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/button-bg.png) #f3f3f3">
+        <h3 class="invisibile">
+            <a href="/" class="logo">
+                Neutronest
+            </a>
+        </h3>
+        <button class="menu">menu</button>
+    </nav>
+
+    <button class="ipad-menu menu">menu</button>
+
+    <h1 class="title" id="main-title">
+        <a href="/" class="logo">
+            Neutronest
+        </a>
+    </h1>
+    <h2 class="desc">
+        
+    </h2>
+
+    <div class="links">
+        <ul>
+            
+            <li>
+                <a href="https://github.com/neutronest" target="_blank" rel="noopener">
+                    Github
+                </a>
+            </li>
+            
+            <li>
+                <a href="/null">
+                    About
+                </a>
+            </li>
+            
+        </ul>
     </div>
+</header>
+        <main class="main">
+            <article class="post">
+    
+    
+    <h4 class="post-cat">
+        <a href="/categories/article/">
+            article
+        </a>
+    </h4>
+    
+    <h4 class="post-cat">
+        <a href="/categories/article/liberal-art/">
+            liberal-art
+        </a>
+    </h4>
+    
+    
+    <h2 class="post-title">
+        奔跑吧！摩耶花 其二
+    </h2>
+    <ul class="post-date">
+        <li>
+            2020-09-27
+        </li>
+        <li>
+            Chaos
+        </li>
+    </ul>
     <div class="post-content">
         <p>注：本文为B站文章归档， 原始链接： <a href="https://www.bilibili.com/read/cv6406525" target="_blank" rel="noopener">https://www.bilibili.com/read/cv6406525</a></p>
 <h3 id="我们的传说之书"><a href="#我们的传说之书" class="headerlink" title="我们的传说之书"></a>我们的传说之书</h3><p>《我们的传说之书》（わたしたちの伝説の一冊）之所以特别，就在于她是一篇罕见的，并未以折木奉太郎为叙述主体的故事。大部分《冰菓》的故事都往往以折木的分析推理导出事实真相为结尾，即便是类似《镜中不得见》这样并未以折木推理为主的故事，折木本身也会作为关键的穿插性线索出现。而在《我们的传说之书》中，折木仅仅在开场时候的读后感讨论片段出现过，之后则彻底是以摩耶花为第一视角的漫研社相关情节，折木本人则再未出现过，也就不会再有传统冰菓叙事里的“折木推理得出事实真相”的桥段。这令我十分不安，因为折木的缺位可能意味着事情的真相被掩盖了。我们依旧先简单看看故事情节：</p>
@@ -100,23 +188,34 @@
 <p>《我们的传说之书》故事到此结束。</p>
 
     </div>
-    <div class="post-epilogue container">
-        <div class="row">
-            
-                <div class="one-third column">
-                    <span>category</span>
-                    <div class="tag-list">
-                        
-                    </div>
-                </div>
-         
-        </div>
-    </div>
-    
-    <div class="comment-container container">
-        
+</article>
+        </main>
+        <aside class="aside">
+            <div class="close"></div>
+            <section class="aside-section">
+                
+    <h1>Categories</h1>
 
-    </div>
-    
-</div>
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/animation/">animation</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/article/liberal-art/">liberal-art</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/liberalart/">liberalart</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/liberalart/article/">article</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/machinelearning/">machinelearning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/novel/">novel</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/storm/">storm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/storm/industry/">industry</a></li></ul></li></ul></li></ul>
 
+            </section>
+            <section class="aside-section">
+                
+    <h1>Archives</h1>
+
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/">2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/">2014</a></li></ul>
+
+
+            </section>
+            <section class="aside-section tag">
+                
+    <h1>Tags</h1>
+
+    
+
+            </section>
+        </aside>
+    </div>
+</body>
+
+</html>

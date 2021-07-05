@@ -1,63 +1,145 @@
 <!DOCTYPE html>
-<!-- modified from pluskid's blog -->
-<!-- thanks pluskid.. -->
-<html lang="en">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Neutronest</title>
-    <meta name="author" content="Chaos ">
-    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
-    <!-- Mobile Specific Metas
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- FONT
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <!-- Google webfonts is almost not accessible from China, so we host locally -->
-    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
-    <!-- CSS
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/skeleton.css"> 
-    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
-    <link rel="stylesheet" href="/css/customize.css">    
-<meta name="generator" content="Hexo 4.2.1"></head>
-
-
-
-<body>
-    <div class="page-header container">
-        <ul class="nav-left">
-            <li class="home"><a href="/about/about.html">λ neutronest . </a></li>
-            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
-            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
-            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
-            <li class="desktop-only"><a href="/archives">Archives</a></li>
-            <li class="desktop-only"><a href="">Resume</a></li>
-            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
-        </ul>
-
-        <ul class="nav-right">
-            <li><a href="">Github</a></li>
-            <li><a href="">Linkedin</a></li>
-            <li><a href="/atom.xml">RSS</a></li>
-        </ul>
-
-        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
-    </div>
-
-
-<div class="post-container">
-    <div class="post-header">
-        <h2>京都印象·吉田寮探险回忆</h2>
-        <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2015-11-04</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="keywords" content="hexo, autumn" />
+    <title>
+        Neutronest
+    </title>
+    <!-- favicon -->
     
-</div>
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/favicon.ico" />
+     
+<link rel="stylesheet" href="/css/style.css">
 
+
+    <!-- highlight -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/github-gist.min.css" />
+    <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad()
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-infinite-scroll@2.0.0/dist/main.js"></script>
+
+    <script>
+        infiniteScroll()
+
+        window.addEventListener('DOMContentLoaded', function () {
+            const [
+                mainTitle,
+                mobileMenu,
+                mobileMainTitle,
+                mobileMenuBtn,
+                ipadMenuBtn,
+                aside,
+                closeBtn,
+            ] = getEle(
+                '#main-title',
+                '.mobile-menu',
+                '.mobile-menu h3',
+                '.mobile-menu button',
+                '.ipad-menu',
+                'aside',
+                'aside .close',
+            )
+            const io = new IntersectionObserver(entries => {
+                if (entries[0].intersectionRatio <= 0) {
+                    mobileMainTitle.classList.remove('invisibile')
+                } else {
+                    mobileMainTitle.classList.add('invisibile')
+                }
+            })
+            io.observe(mainTitle)
+
+            clickToggleAside(mobileMenuBtn)
+            clickToggleAside(ipadMenuBtn)
+            clickToggleAside(closeBtn, false)
+
+            const isMenuVisible = window.getComputedStyle(mobileMenu).display !== 'none'
+            if (isMenuVisible) document.body.style.background = 'none'
+
+            function getEle(...args) {
+                return args.map(arg => document.querySelector(arg))
+            }
+
+            function clickToggleAside(btn, show = true) {
+                btn.addEventListener('click', function () {
+                    if (show) {
+                        aside.style.display = 'block'
+                    } else {
+                        aside.style.display = 'none'
+                    }
+                })
+            }
+        })
+    </script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Neutronest" type="application/atom+xml">
+</head>
+
+<body style="background: url(https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/button-bg.png) #f3f3f3">
+    <div class="container">
+        <header class="header">
+    <nav class="mobile-menu" style="background: url(https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/button-bg.png) #f3f3f3">
+        <h3 class="invisibile">
+            <a href="/" class="logo">
+                Neutronest
+            </a>
+        </h3>
+        <button class="menu">menu</button>
+    </nav>
+
+    <button class="ipad-menu menu">menu</button>
+
+    <h1 class="title" id="main-title">
+        <a href="/" class="logo">
+            Neutronest
+        </a>
+    </h1>
+    <h2 class="desc">
+        
+    </h2>
+
+    <div class="links">
+        <ul>
+            
+            <li>
+                <a href="https://github.com/neutronest" target="_blank" rel="noopener">
+                    Github
+                </a>
+            </li>
+            
+            <li>
+                <a href="/null">
+                    About
+                </a>
+            </li>
+            
+        </ul>
     </div>
+</header>
+        <main class="main">
+            <article class="post">
+    
+    
+    <h4 class="post-cat">
+        <a href="/categories/liberalart/">
+            liberalart
+        </a>
+    </h4>
+    
+    
+    <h2 class="post-title">
+        京都印象·吉田寮探险回忆
+    </h2>
+    <ul class="post-date">
+        <li>
+            2015-11-04
+        </li>
+        <li>
+            Chaos
+        </li>
+    </ul>
     <div class="post-content">
         <p><a href="http://s890.photobucket.com/user/neutronest/media/MyBlog/MLSS/IMG_20150905_155103_zpsqdmjhagh.jpg.html" target="_blank"><img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/MLSS/IMG_20150905_155103_zpsqdmjhagh.jpg" border="0" alt=" photo IMG_20150905_155103_zpsqdmjhagh.jpg"/></a><br>（北宇治风情）</p>
 <p>最近开始断断续续地写一些关于两个月前日本 Machine Learning Summer School 之行的经历回顾。总体来说是比较难忘的，无论是听的那些几乎全然听不懂的课也好，还是头一次坐飞机/出国，碰见很多热心的日本国民也好；见到很多人，结识很多朋友也好（果然还是以日本人和中国人居多）；以及感受到的文化上的新鲜感呢以及有一些深层次文化的不适也好，いろいろ，可以说是相当难忘的了。由于是回忆，因此我并不会严格按照两周多的时间顺序进行流水账，而是按照重点事件来记。大体上，我目前想到值得记录的，有一些飘洋时候心情的碎碎念；初到京都，以及二日后的夜游感受；与认识的人吃饭，coffee break的一些不适的真实记录感；一起唱卡拉OK，恰巧体验了某些深层次的日本文化的感觉；头一次参加 banquet的一些不适合绝望感；具体课程的记录（这个是很重要的，或者说这个才是主体吧）；大大小小逛过的书店；与日本友人交流的点点♂滴滴；日本的饮食；以及一些事件诸如登山啦；游奈良和宇治啦；之后与东大友人的京阿尼本部巡礼&amp;上低音号巡礼啦；京大吉田寮探险啦；之后独自去东京感受到的那种压抑啦；秋叶原的靡靡啦；东大的幽玄啦。。。，以上等等，皆是值得记录之事。</p>
@@ -123,23 +205,34 @@
 <p>短短不到一个小时的探险旅程，应该说整个日本之行的二十分之一的经历都不到吧。然而，我总是回想起那个临时起意的中午，那个死皮赖脸的，害的上课迟到的下午。比起这样肆意挥洒的青春，我们这一辈中国人普遍经历过的在自以为是的道德约束下的教育生活，到底是得到的多，还是失去的多。</p>
 
     </div>
-    <div class="post-epilogue container">
-        <div class="row">
-            
-                <div class="one-third column">
-                    <span>category</span>
-                    <div class="tag-list">
-                        
-                    </div>
-                </div>
-         
-        </div>
-    </div>
-    
-    <div class="comment-container container">
-        
+</article>
+        </main>
+        <aside class="aside">
+            <div class="close"></div>
+            <section class="aside-section">
+                
+    <h1>Categories</h1>
 
-    </div>
-    
-</div>
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/animation/">animation</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/article/liberal-art/">liberal-art</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/liberalart/">liberalart</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/liberalart/article/">article</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/machinelearning/">machinelearning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/novel/">novel</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/storm/">storm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/storm/industry/">industry</a></li></ul></li></ul></li></ul>
 
+            </section>
+            <section class="aside-section">
+                
+    <h1>Archives</h1>
+
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/">2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/">2014</a></li></ul>
+
+
+            </section>
+            <section class="aside-section tag">
+                
+    <h1>Tags</h1>
+
+    
+
+            </section>
+        </aside>
+    </div>
+</body>
+
+</html>

@@ -1,449 +1,484 @@
 <!DOCTYPE html>
-<!-- modified from pluskid's blog -->
-<!-- thanks pluskid.. -->
-<html lang="en">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Neutronest</title>
-    <meta name="author" content="Chaos ">
-    <link rel="alternative" href="http://www.neutronest.moe/rss.xml" type="application/rss+xml" title="Neutronest - RSS">    
-    <!-- Mobile Specific Metas
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- FONT
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <!-- Google webfonts is almost not accessible from China, so we host locally -->
-    <link href="./css/fonts.css" type="text/css" rel="stylesheet" media="all">
-    <!-- CSS
-         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/skeleton.css"> 
-    <link href="/css/pygments.css" type="text/css" rel="stylesheet" media="all">
-    <link rel="stylesheet" href="/css/customize.css">    
-<meta name="generator" content="Hexo 4.2.1"></head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="keywords" content="hexo, autumn" />
+    <title>
+        Neutronest
+    </title>
+    <!-- favicon -->
+    
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/favicon.ico" />
+     
+<link rel="stylesheet" href="/css/style.css">
 
 
+    <!-- highlight -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/github-gist.min.css" />
+    <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad()
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-infinite-scroll@2.0.0/dist/main.js"></script>
 
-<body>
-    <div class="page-header container">
-        <ul class="nav-left">
-            <li class="home"><a href="/about/about.html">λ neutronest . </a></li>
-            <li class="desktop-only"><a href="/">( λ blogs. </a></li>
-            <li class="desktop-only"><a href="/categories/tech/">Tech Blogs</a></li>
-            <li class="desktop-only"><a href="/categories/article">Articles )</a></li>
-            <li class="desktop-only"><a href="/archives">Archives</a></li>
-            <li class="desktop-only"><a href="">Resume</a></li>
-            <li class="desktop-only"><a href="/about.html"> → Home</a></li>
+    <script>
+        infiniteScroll()
+
+        window.addEventListener('DOMContentLoaded', function () {
+            const [
+                mainTitle,
+                mobileMenu,
+                mobileMainTitle,
+                mobileMenuBtn,
+                ipadMenuBtn,
+                aside,
+                closeBtn,
+            ] = getEle(
+                '#main-title',
+                '.mobile-menu',
+                '.mobile-menu h3',
+                '.mobile-menu button',
+                '.ipad-menu',
+                'aside',
+                'aside .close',
+            )
+            const io = new IntersectionObserver(entries => {
+                if (entries[0].intersectionRatio <= 0) {
+                    mobileMainTitle.classList.remove('invisibile')
+                } else {
+                    mobileMainTitle.classList.add('invisibile')
+                }
+            })
+            io.observe(mainTitle)
+
+            clickToggleAside(mobileMenuBtn)
+            clickToggleAside(ipadMenuBtn)
+            clickToggleAside(closeBtn, false)
+
+            const isMenuVisible = window.getComputedStyle(mobileMenu).display !== 'none'
+            if (isMenuVisible) document.body.style.background = 'none'
+
+            function getEle(...args) {
+                return args.map(arg => document.querySelector(arg))
+            }
+
+            function clickToggleAside(btn, show = true) {
+                btn.addEventListener('click', function () {
+                    if (show) {
+                        aside.style.display = 'block'
+                    } else {
+                        aside.style.display = 'none'
+                    }
+                })
+            }
+        })
+    </script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Neutronest" type="application/atom+xml">
+</head>
+
+<body style="background: url(https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/button-bg.png) #f3f3f3">
+    <div class="container">
+        <header class="header">
+    <nav class="mobile-menu" style="background: url(https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/button-bg.png) #f3f3f3">
+        <h3 class="invisibile">
+            <a href="/" class="logo">
+                Neutronest
+            </a>
+        </h3>
+        <button class="menu">menu</button>
+    </nav>
+
+    <button class="ipad-menu menu">menu</button>
+
+    <h1 class="title" id="main-title">
+        <a href="/" class="logo">
+            Neutronest
+        </a>
+    </h1>
+    <h2 class="desc">
+        
+    </h2>
+
+    <div class="links">
+        <ul>
+            
+            <li>
+                <a href="https://github.com/neutronest" target="_blank" rel="noopener">
+                    Github
+                </a>
+            </li>
+            
+            <li>
+                <a href="/null">
+                    About
+                </a>
+            </li>
+            
         </ul>
-
-        <ul class="nav-right">
-            <li><a href="">Github</a></li>
-            <li><a href="">Linkedin</a></li>
-            <li><a href="/atom.xml">RSS</a></li>
-        </ul>
-
-        <p class="tagline"> 愿不愿意听听美式笑话？ </p>
     </div>
-
-<!-- section: index  -->
-
-<div class="container">
-    <div class="separator"></div>
-    <div class="top_words">
-        <p> 欢迎来到 neutronest 的小站。这里记录了一些关于 程式语言应用 以及 机器学习等相关技术的文章(TECH BLOGS)。同时也包括一些生活，感想随笔 (ARTICLES)。如果你对深度学习，机器学习理论，函数式编程，形式语义等内容感兴趣，这里可能会有部分文章会对您有益（并没有 
-
-        </p>
-    </div>
-</div>
-
-
-    <div class="post-container">
-        <div class="post-content">
-            <div class="post-header">
-                <h2 class="title">
-                    <a href="/2015/12/10/2015-12-10-akihabara-rain/">秋叶原之雨</a>
-                </h2>
-                <span>
-                    <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2015-12-10</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+</header>
+        <main class="main">
+            
+<section class="posts">
     
-</div>
-
-                </span>
-                <p align="left">
-                    
-
-                        那是我在收到东京大学教授的婉拒邮件，在秋叶原附近徘徊之时。
-我是在京都 MLSS 结束之后来到东京的。本来想接着在日本滞留的最后机会好好逛逛东京。可是时机实在是不巧，正好赶上连续台风的影响，东京几天连续降雨。
-连续降雨，
-连续降雨，
-一直没有停，我本想发散的到处嬉闹的心逐渐收敛起来，懒懒的。由于旅居的青年旅社离秋叶原比较近，心里便想这几天干脆就一直在秋叶原打发时间过活好了，况且对于我这样除了看动画、逛漫展的无聊透顶的人来说，秋叶原就如同圣地一般，也是个相当有趣的地方罢——
-我是这样期许着的。
-然而我总是会有些许的不适感，说成违和感更合适一些罢。这违和感体现在哪里呢？首先自然是这持续不停的润雨了。它并不是暴雨，并不会使人突然地因其发怒，而是连续几天，用你不得不一直撑着的伞柄，来慢慢浸润你的内心。仿佛不仅你那久穿不换散发潮臭味的鞋子被逐渐浸润了，连你的心灵也逐渐浸润起来，然后逐步弄湿你周围的事
-
-                    
-                </p>
-
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/liberalart/">
+                        liberalart
+                    </a>
+                </h4>
                 
-                    <div class="read-more">
-                        <a href="/2015/12/10/2015-12-10-akihabara-rain/" class="btn">— read more —</a>
-                    </div>
-                
-            </div>
-        </div>
-    </div>
-    <div class="separator"></div>
+                    <h1 class="post-title">
+                        <a href="/2015/12/10/2015-12-10-akihabara-rain/">
+                            秋叶原之雨
+                        </a>
+                    </h1>
 
-    <div class="post-container">
-        <div class="post-content">
-            <div class="post-header">
-                <h2 class="title">
-                    <a href="/2015/11/15/2015-11-15-LSTM-survey/">LSTM in depth</a>
-                </h2>
-                <span>
-                    <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2015-11-15</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
-    
-</div>
-
-                </span>
-                <p align="left">
+                    <ul class="post-date">
+                        <li>
+                            December 10, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
                     
-
-                        Have learned and survey the LSTM for a lone time. In this night I will give a short description about the LSTM structure itself and some applications involved.
-Before the discussion, I strongly recommend people who didn’t know LSTM before reading this blog Understanding LSTM Networks, this is an explicit essay that talking about LSTM clearly, you won’t want to miss it! Anyway, I will take some con
-
-                    
-                </p>
-
-                
-                    <div class="read-more">
-                        <a href="/2015/11/15/2015-11-15-LSTM-survey/" class="btn">— read more —</a>
-                    </div>
-                
-            </div>
-        </div>
-    </div>
-    <div class="separator"></div>
-
-    <div class="post-container">
-        <div class="post-content">
-            <div class="post-header">
-                <h2 class="title">
-                    <a href="/2015/11/11/2015-11-11-christmasshoujiu/">人间失格な圣诞少女</a>
-                </h2>
-                <span>
-                    <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2015-11-11</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
-    
-</div>
-
-                </span>
-                <p align="left">
-                    
-
-                        圣诞夜。
-将要被雪覆盖的小城顽强地挣扎着，街道两旁的路灯仿佛在用生命的最后一点亮光呐喊，然而皆被厚重的积雪压弯了腰。与之相反的是小城人们喜气洋洋的氛围。街上鲜活的人头在攒动，琳琅满目的商店里的人络绎不觉。商店门口的圣诞树被覆盖的雪以及人们强压上去的小灯粉饰得五彩斑斓，引得一大群人为之照相，打转。平日里殷辛动作的白领们此时大都在享受着圣诞果实。而这样的果实也自然不是凭空诞生的呢——彻夜不眠的营业员们、忙着运送货物的工人以及其他为了节日的顺利运转而在明里暗里大街小巷奔波的人们、打工的少女，他们也享受着圣诞节的平凡之处呢。
-在小城中，能被亮光所沐浴的地方，用亮光来维持着圣诞，不能被亮光所波及的地方，自然也有消遣过活的方法。
-『喂，让我玩啦』，小男孩用力撕抢着家里唯一的布娃娃。
-『呜——又抢我的娃娃！又抢我的娃娃！你都玩了一整天了，就让我碰一下都不行吗？』小女孩哭着闹着，『等一会儿妈妈回来，我就告
-
-                    
-                </p>
-
-                
-                    <div class="read-more">
-                        <a href="/2015/11/11/2015-11-11-christmasshoujiu/" class="btn">— read more —</a>
-                    </div>
-                
-            </div>
-        </div>
-    </div>
-    <div class="separator"></div>
-
-    <div class="post-container">
-        <div class="post-content">
-            <div class="post-header">
-                <h2 class="title">
-                    <a href="/2015/11/04/2015-11-03-kyoto1/">京都印象·吉田寮探险回忆</a>
-                </h2>
-                <span>
-                    <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2015-11-04</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
-    
-</div>
-
-                </span>
-                <p align="left">
-                    
-
-                        （北宇治风情）
-最近开始断断续续地写一些关于两个月前日本 Machine Learning Summer School 之行的经历回顾。总体来说是比较难忘的，无论是听的那些几乎全然听不懂的课也好，还是头一次坐飞机/出国，碰见很多热心的日本国民也好；见到很多人，结识很多朋友也好（果然还是以日本人和中国人居多）；以及感受到的文化上的新鲜感呢以及有一些深层次文化的不适也好，いろいろ，可以说是相当难忘的了。由于是回忆，因此我并不会严格按照两周多的时间顺序进行流水账，而是按照重点事件来记。大体上，我目前想到值得记录的，有一些飘洋时候心情的碎碎念；初到京都，以及二日后的夜游感受；与认识的人吃饭，coffee break的一些不适的真实记录感；一起唱卡拉OK，恰巧体验了某些深层次的日本文化的感觉；头一次参加 banquet的一些不适合绝望感；具体课程的记录（这个是很重要的，或者说这个才是主体吧）；大大小
-
-                    
-                </p>
-
-                
-                    <div class="read-more">
-                        <a href="/2015/11/04/2015-11-03-kyoto1/" class="btn">— read more —</a>
-                    </div>
-                
-            </div>
-        </div>
-    </div>
-    <div class="separator"></div>
-
-    <div class="post-container">
-        <div class="post-content">
-            <div class="post-header">
-                <h2 class="title">
-                    <a href="/2015/04/25/2015-04-25-class-system/">关于班级社会系统与校园霸凌的存在必然性论证</a>
-                </h2>
-                <span>
-                    <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2015-04-25</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
-    
-</div>
-
-                </span>
-                <p align="left">
-                    
-
-                        Introduction最近在补《我的青春恋爱物语果然有问题》，本来以为是一个温馨的日常向的番，结果却看出了一阵寒意。该番是披着日常系的外壳来反映校园霸凌以及同学之间微妙的牵制与被牵制关系的现实主义作品。作者对校园生活的观察以及对同学关系本质的思考非常深刻，这就引发了我对校园生活的残想。
-至少是在日本，“いじめ”（即校园霸凌）的现象十分严重。这与植根与其深处的集体主义国民性是分不开的。当一个人在班里遭到了欺负时，大家的反应往往不是仗义出手而是见风使舵。因为大家终于可以松一口气了，被霸凌的命运不会出现在自己身上了。自己只要跟风去欺负他就能保障自己的安全。很有意思的是，在“班集体”这样一个种群系统中，你总会发现一个“处在食物链底端”的人，你不用关心他是谁，因为是谁都无所谓。他所扮演的“被霸凌”的角色同时也为提升整个集体的安全感做出了贡献（因为其他人都松了口气）。而更为有意思的是，那位被霸凌的同
-
-                    
-                </p>
-
-                
-                    <div class="read-more">
-                        <a href="/2015/04/25/2015-04-25-class-system/" class="btn">— read more —</a>
-                    </div>
-                
-            </div>
-        </div>
-    </div>
-    <div class="separator"></div>
-
-    <div class="post-container">
-        <div class="post-content">
-            <div class="post-header">
-                <h2 class="title">
-                    <a href="/2015/03/22/2015-03-21-clause-learning/">关于Clause learning</a>
-                </h2>
-                <span>
-                    <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2015-03-22</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
-    
-</div>
-
-                </span>
-                <p align="left">
-                    
-
-                        什么是 clause learningClause learning 是我今天晚上从实验室回家的时候想到的一个对法律条文进行机器学习的一个学习模型。
-
-
-Introduction今天下午在知乎看到一个关于法律的问题(“如果你拥有立法权，你会迫不及待的给中国增加一条怎样的法律”)，随手答了一下。当然这个事情本身和我的这个想法没有关系。只是这个问题让我想到诸如法律条文生成的滞后性等问题。而且最近在“回家的路上”这样的spare time, 我一直在苦苦构思一个科幻小说的设定，所以难免对这个问题产生些多余的思考。
-首先是，当今的法律体系，无论是大陆法系还是英美法系，都是通过明确的命题条文来构成法律本身的。法官通过犯人、律师、审判团等相关人的陈述和博弈，根据已有的法律条文集合给出一个最终的、综合的判决结果。这实际上可以抽象化一个“模式匹配”的过程，即：审判者通过犯罪者的行为 (action), 考
-
-                    
-                </p>
-
-                
-                    <div class="read-more">
-                        <a href="/2015/03/22/2015-03-21-clause-learning/" class="btn">— read more —</a>
-                    </div>
-                
-            </div>
-        </div>
-    </div>
-    <div class="separator"></div>
-
-    <div class="post-container">
-        <div class="post-content">
-            <div class="post-header">
-                <h2 class="title">
-                    <a href="/2015/01/12/2015-01-12-bayesian-occam-razor/">Bayesian Occam Razor</a>
-                </h2>
-                <span>
-                    <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2015-01-12</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
-    
-</div>
-
-                </span>
-                <p align="left">
-                    
-
-                        Motivation问题1：
-请看如下图片。在图片中那些灰色的，黑灰色的，以及黑色的均是box。现在考虑图片中被树挡住的部分，请问被树挡住的有几个box?
-
-你会选择1个， 还是2个？
-
-
-
-问题2：
-给定一个有限数列： -1，3， 7， 11。 请问接下来的两个数是多少？
-答案1：15, 19 (我认为它满足一个首项为-1，递增项为4的等差数列)。
-答案2：-19.9，1043.8 (我认为它满足一个 $ -x^{3}/11 + 9/11x^{2} + 23/11$  的多项式数列 …..)
-我想绝大多数人面对以上两个问题都会选择比较“自然”的那种，即树后面就一个箱子，（-1，3，7，11）就是一个等差数列罢了；而非大开脑洞，认为今天迎面走来的朝夕相处的同学不是其本体，而是一个正面是人脸，背面是鬼头的双面怪。即“如果对于某种已观测到的事物(observed dataset)，我有A B 
-
-                    
-                </p>
-
-                
-                    <div class="read-more">
-                        <a href="/2015/01/12/2015-01-12-bayesian-occam-razor/" class="btn">— read more —</a>
-                    </div>
-                
-            </div>
-        </div>
-    </div>
-    <div class="separator"></div>
-
-    <div class="post-container">
-        <div class="post-content">
-            <div class="post-header">
-                <h2 class="title">
-                    <a href="/2014/12/24/2014-12-24-psycho-pass-thinking/">Psycho-Pass 第一季小结</a>
-                </h2>
-                <span>
-                    <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2014-12-24</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
-    
-</div>
-
-                </span>
-                <p align="left">
-                    
-
+                    <div class="post-content ">
                         
-Introduction最近把这部动漫的第一季追完了，非常不错的一部番，尽管在个人看来剧情与人物表现上有些问题。这部动漫主要讲述了在未来的一个“乌托邦”般的都市，人类的心理状态、性格倾向、所擅长的工作领域都可以数值化，并被整个城市的各个物联网终端捕捉到反馈到一个被称为“西比拉 system”的中央控制中心中（并不完全是电脑）。人类的一切包括情感在内的隐数据都能够被探测到，因此人类再也不用为很多复杂的事情操心，而只要实现整个西比拉system为其度量出来的“数值”就好。于是如何让这个数值更好，成为了那个时代人们努力的日常。而在这些数值其中，“犯罪数值”也是可以通过人的心态失衡程度、心理压力等feature度量出来。那些犯罪数值过高的人（即使没有实质的犯罪行为），也会被刑警依据其数值的大小等级施以不同等级的制裁。在这个世界中，刑警的武器只有一个：支配者。它会根据目标犯罪数值不同发射出不同类型
-
-                    
-                </p>
-
-                
-                    <div class="read-more">
-                        <a href="/2014/12/24/2014-12-24-psycho-pass-thinking/" class="btn">— read more —</a>
+                            <a href="/2015/12/10/2015-12-10-akihabara-rain/" class="more-link">Continue reading</a>
                     </div>
+        </article>
+        
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/tech/">
+                        tech
+                    </a>
+                </h4>
                 
-            </div>
-        </div>
-    </div>
-    <div class="separator"></div>
+                    <h1 class="post-title">
+                        <a href="/2015/11/15/2015-11-15-LSTM-survey/">
+                            LSTM in depth
+                        </a>
+                    </h1>
 
-    <div class="post-container">
-        <div class="post-content">
-            <div class="post-header">
-                <h2 class="title">
-                    <a href="/2014/03/30/2014-03-30-a-hard-desicion/">A Hard Desicion</a>
-                </h2>
-                <span>
-                    <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2014-03-30</span>
+                    <ul class="post-date">
+                        <li>
+                            November 15, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                        <div class="post-cover">
+                            <img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/LSTM-in-depth/%202015-11-15%2012.43.33_zpsbcdry6o9.png">
+                        </div>
+                    
+                    <div class="post-content ">
+                        
+                            <a href="/2015/11/15/2015-11-15-LSTM-survey/" class="more-link">Continue reading</a>
+                    </div>
+        </article>
+        
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/novel/">
+                        novel
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2015/11/11/2015-11-11-christmasshoujiu/">
+                            人间失格な圣诞少女
+                        </a>
+                    </h1>
 
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
+                    <ul class="post-date">
+                        <li>
+                            November 11, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                    <div class="post-content ">
+                        
+                            <a href="/2015/11/11/2015-11-11-christmasshoujiu/" class="more-link">Continue reading</a>
+                    </div>
+        </article>
+        
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/liberalart/">
+                        liberalart
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2015/11/04/2015-11-03-kyoto1/">
+                            京都印象·吉田寮探险回忆
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            November 4, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                        <div class="post-cover">
+                            <img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/MLSS/IMG_20150905_155103_zpsqdmjhagh.jpg">
+                        </div>
+                    
+                    <div class="post-content ">
+                        
+                            <a href="/2015/11/04/2015-11-03-kyoto1/" class="more-link">Continue reading</a>
+                    </div>
+        </article>
+        
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/liberalart/">
+                        liberalart
+                    </a>
+                </h4>
+                
+                <h4 class="post-cat">
+                    <a href="/categories/liberalart/article/">
+                        article
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2015/04/25/2015-04-25-class-system/">
+                            关于班级社会系统与校园霸凌的存在必然性论证
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            April 25, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                    <div class="post-content ">
+                        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>最近在补《我的青春恋爱物语果然有问题》，本来以为是一个温馨的日常向的番，结果却看出了一阵寒意。该番是披着日常系的外壳来反映校园霸凌以及同学之间微妙的牵制与被牵制关系的现实主义作品。作者对校园生活的观察以及对同学关系本质的思考非常深刻，这就引发了我对校园生活的残想。</p>
+<p>至少是在日本，“いじめ”（即校园霸凌）的现象十分严重。这与植根与其深处的集体主义国民性是分不开的。当一个人在班里遭到了欺负时，大家的反应往往不是仗义出手而是见风使舵。因为大家终于可以松一口气了，被霸凌的命运不会出现在自己身上了。自己只要跟风去欺负他就能保障自己的安全。很有意思的是，在“班集体”这样一个种群系统中，你总会发现一个“处在食物链底端”的人，你不用关心他是谁，因为是谁都无所谓。他所扮演的“被霸凌”的角色同时也为提升整个集体的安全感做出了贡献（因为其他人都松了口气）。而更为有意思的是，那位被霸凌的同学往往还会反思是不是自己哪里不够好，是不是自己身上出了问题。为什么别人不欺负别人却都来欺负我呢？ 殊不知如果他退学或是转学的话，第二个替罪羊总会出现的，因为大家需要一个这样的角色。而作为整个种群系统的管理者——老师，也往往会认为问题出在那个被欺负的同学身上。因为比起解决那N-1个同学的心理问题，解决一个人的问题至少看上去是容易得多的。</p>
+                            <a href="/2015/04/25/2015-04-25-class-system/" class="more-link">Continue reading</a>
+                    </div>
+        </article>
+        
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/tech/">
+                        tech
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2015/03/22/2015-03-21-clause-learning/">
+                            关于Clause learning
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            March 22, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                        <div class="post-cover">
+                            <img src="http://i890.photobucket.com/albums/ac103/neutronest/%202015-03-22%2012.20.49_zpsw9pn56mc.png">
+                        </div>
+                    
+                    <div class="post-content ">
+                        <h2 id="什么是-clause-learning"><a href="#什么是-clause-learning" class="headerlink" title="什么是 clause learning"></a>什么是 clause learning</h2><p>Clause learning 是我今天晚上从实验室回家的时候想到的一个对法律条文进行机器学习的一个学习模型。</p>
+                            <a href="/2015/03/22/2015-03-21-clause-learning/" class="more-link">Continue reading</a>
+                    </div>
+        </article>
+        
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/machinelearning/">
+                        machinelearning
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2015/01/12/2015-01-12-bayesian-occam-razor/">
+                            Bayesian Occam Razor
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            January 12, 2015
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                        <div class="post-cover">
+                            <img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534842709_zpsd14c32b8.png">
+                        </div>
+                    
+                    <div class="post-content ">
+                        <h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p>问题1：</p>
+<p>请看如下图片。在图片中那些灰色的，黑灰色的，以及黑色的均是box。现在考虑图片中被树挡住的部分，请问被树挡住的有几个box?</p>
+<p><a href="http://s890.photobucket.com/user/neutronest/media/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534842709_zpsd14c32b8.png.html" target="_blank"><img src="http://i890.photobucket.com/albums/ac103/neutronest/MyBlog/baysesian%20occam%20razor/5C4F5E555FEB71672015-01-124E0B534842709_zpsd14c32b8.png" border="0" alt=" photo 5C4F5E555FEB71672015-01-124E0B534842709_zpsd14c32b8.png"/></a></p>
+<p>你会选择1个， 还是2个？</p>
+                            <a href="/2015/01/12/2015-01-12-bayesian-occam-razor/" class="more-link">Continue reading</a>
+                    </div>
+        </article>
+        
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/animation/">
+                        animation
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2014/12/24/2014-12-24-psycho-pass-thinking/">
+                            Psycho-Pass 第一季小结
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            December 24, 2014
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                        <div class="post-cover">
+                            <img src="http://i890.photobucket.com/albums/ac103/neutronest/psycho_pass_wallpaper_by_fednan-d80f8el_zpsd4b8951c.jpg">
+                        </div>
+                    
+                    <div class="post-content ">
+                        <p><a href="http://s890.photobucket.com/user/neutronest/media/psycho_pass_wallpaper_by_fednan-d80f8el_zpsd4b8951c.jpg.html" target="_blank"><img src="http://i890.photobucket.com/albums/ac103/neutronest/psycho_pass_wallpaper_by_fednan-d80f8el_zpsd4b8951c.jpg" border="0" alt=" photo psycho_pass_wallpaper_by_fednan-d80f8el_zpsd4b8951c.jpg"/></a></p>
+<h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>最近把这部动漫的第一季追完了，非常不错的一部番，尽管在个人看来剧情与人物表现上有些问题。这部动漫主要讲述了在未来的一个“乌托邦”般的都市，人类的心理状态、性格倾向、所擅长的工作领域都可以数值化，并被整个城市的各个物联网终端捕捉到反馈到一个被称为“西比拉 system”的中央控制中心中（并不完全是电脑）。人类的一切包括情感在内的隐数据都能够被探测到，因此人类再也不用为很多复杂的事情操心，而只要实现整个西比拉system为其度量出来的“数值”就好。于是如何让这个数值更好，成为了那个时代人们努力的日常。而在这些数值其中，“犯罪数值”也是可以通过人的心态失衡程度、心理压力等feature度量出来。那些犯罪数值过高的人（即使没有实质的犯罪行为），也会被刑警依据其数值的大小等级施以不同等级的制裁。在这个世界中，刑警的武器只有一个：支配者。它会根据目标犯罪数值不同发射出不同类型的“子弹”实施制裁：最低等级的罪犯只需麻醉就好（射出麻醉弹），而暴徒则会被直接打爆（可能是某种化学子弹）甚至以分子层面直接分解（Decomposion）。于是整个城市的治安就以这种方式维持着，而这个所谓的“数值” is just called “Psycho-Pass”.</p>
+                            <a href="/2014/12/24/2014-12-24-psycho-pass-thinking/" class="more-link">Continue reading</a>
+                    </div>
+        </article>
+        
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/life/">
+                        life
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2014/03/30/2014-03-30-a-hard-desicion/">
+                            A Hard Desicion
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            March 30, 2014
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                    <div class="post-content ">
+                        <h3 id="一个艰难的决定"><a href="#一个艰难的决定" class="headerlink" title="一个艰难的决定"></a>一个艰难的决定</h3><p>终于决定要离开了，since 我在xm工作了一年（算上实习）后。</p>
+<p>其实考虑这个问题已经有一段时间了。首先我确实没想到自己的身体竟然如此的脆弱不堪，越来越不能适应xm朝9晚9的工作节奏。实习的时候还好，一正式工作的时候才发现有多么的不适应。持续了几个月之后感觉每天都是在虚血的情况下硬着头皮上班，然后由于每次早晨身体的疲惫，就慢慢地“”启发式地“”向 朝9晚9=&gt;朝11晚9迈进, 工作效率也越来越低。 虽然同事们不说什么，但我相信大家的眼睛是雪亮的，谁KPI高谁KPI低心里都是有数的。所以就不得不结束这个9-&gt;9的无间轮回。</p>
+                            <a href="/2014/03/30/2014-03-30-a-hard-desicion/" class="more-link">Continue reading</a>
+                    </div>
+        </article>
+        
+        <article class="post">
+            
+                <h4 class="post-cat">
+                    <a href="/categories/tech/">
+                        tech
+                    </a>
+                </h4>
+                
+                <h4 class="post-cat">
+                    <a href="/categories/tech/life/">
+                        life
+                    </a>
+                </h4>
+                
+                    <h1 class="post-title">
+                        <a href="/2014/01/26/2014-01-25-wei-shi-yao-wo-fan-dui-gong-cheng-si-wei/">
+                            为什么我反对“工程思维”
+                        </a>
+                    </h1>
+
+                    <ul class="post-date">
+                        <li>
+                            January 26, 2014
+                        </li>
+                        <li>
+                            Chaos
+                        </li>
+                    </ul>
+                    
+                    <div class="post-content ">
+                        
+                            <a href="/2014/01/26/2014-01-25-wei-shi-yao-wo-fan-dui-gong-cheng-si-wei/" class="more-link">Continue reading</a>
+                    </div>
+        </article>
+        
+</section>
+
+        </main>
+        <aside class="aside">
+            <div class="close"></div>
+            <section class="aside-section">
+                
+    <h1>Categories</h1>
+
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/animation/">animation</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/article/">article</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/article/liberal-art/">liberal-art</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/liberalart/">liberalart</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/liberalart/article/">article</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/machinelearning/">machinelearning</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/novel/">novel</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/storm/">storm</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/storm/industry/">industry</a></li></ul></li></ul></li></ul>
+
+            </section>
+            <section class="aside-section">
+                
+    <h1>Archives</h1>
+
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/">2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/">2014</a></li></ul>
+
+
+            </section>
+            <section class="aside-section tag">
+                
+    <h1>Tags</h1>
+
     
-</div>
 
-                </span>
-                <p align="left">
-                    
-
-                        一个艰难的决定终于决定要离开了，since 我在xm工作了一年（算上实习）后。
-其实考虑这个问题已经有一段时间了。首先我确实没想到自己的身体竟然如此的脆弱不堪，越来越不能适应xm朝9晚9的工作节奏。实习的时候还好，一正式工作的时候才发现有多么的不适应。持续了几个月之后感觉每天都是在虚血的情况下硬着头皮上班，然后由于每次早晨身体的疲惫，就慢慢地“”启发式地“”向 朝9晚9=&amp;gt;朝11晚9迈进, 工作效率也越来越低。 虽然同事们不说什么，但我相信大家的眼睛是雪亮的，谁KPI高谁KPI低心里都是有数的。所以就不得不结束这个9-&amp;gt;9的无间轮回。
-
-
-客观地说在xm我还是见识了不少东西。xm对于开源技术的态度是值得肯定的，大量采用了facebook, twitter, apache等公司以及开源社区所贡献出来比较成熟的，可以稳定使用的技术。如 scribe分布式日志系统， thrift框架
-
-                    
-                </p>
-
-                
-                    <div class="read-more">
-                        <a href="/2014/03/30/2014-03-30-a-hard-desicion/" class="btn">— read more —</a>
-                    </div>
-                
-            </div>
-        </div>
+            </section>
+        </aside>
     </div>
-    <div class="separator"></div>
-
-    <div class="post-container">
-        <div class="post-content">
-            <div class="post-header">
-                <h2 class="title">
-                    <a href="/2014/01/26/2014-01-25-wei-shi-yao-wo-fan-dui-gong-cheng-si-wei/">为什么我反对“工程思维”</a>
-                </h2>
-                <span>
-                    <div class="post-meta">
-    <span><img src="/img/icon-calendar.svg" width="12px"> 2014-01-26</span>
-
-    <!--<span><img src="/img/icon-printer.svg" width="12px"> <a href="http://freemind.pluskid.org/pdf/misc/disable-os-x-system-integrity-protection.pdf" target="_blank" rel="noopener">Printable Version</a></span> -->
-    
-</div>
-
-                </span>
-                <p align="left">
-                    
-
-                         我先解释一下什么叫做“所谓的工程思维”。
- 如果你以“码农一只”的设定出现，你的日常是“XX公司里的一名程序员或者架构师”。那么，你思考的东西与解决的矛盾往往会是这样的：
-“作为一名工程师，我写的代码是否完成了基本功能，做好了单元测试；是否达到了SLA的要求；今天我新增了XXX这个业务逻辑。这个服务是不是会对服务器CPU、memory带来高负载和庞大的数据压力；我是不是应该为自己的服务加一些监控，检验一下QPS、Latency、DB读写的走势，主库从库负载是否搭配合理。
-  我应如何妥善地与PM、SRE进行沟通和博弈，保证团队的项目稳健地向前推进。
-  我应如何将自己做的事情与个人发展协调统一起来。”
-  这样有什么问题吗？好像没有是吧。
-  直到我上人人、知乎和facebook的时候发现自己再也看不懂我曾经的小伙伴都在研究什么。
-   =========================
-
-                    
-                </p>
-
-                
-                    <div class="read-more">
-                        <a href="/2014/01/26/2014-01-25-wei-shi-yao-wo-fan-dui-gong-cheng-si-wei/" class="btn">— read more —</a>
-                    </div>
-                
-            </div>
-        </div>
-    </div>
-    <div class="separator"></div>
-
-<div class="index-pagination" role="pagination">
-    <a class="pull-left" href="/">← Newer Posts</a>
-    <a class="pull-right" href="/page/3/">Older Posts →</a>
-</div>
-<!-- end of section: index -->
-
-<div id="post-epilogue" class="container">
-    <div class="separator"></div>
-    <div class="archive-link">
-        <center><a href="/archives">— Blog Archives —</a></center>
-    </div>
-    <div class="separator"></div>
-</div>
-<div class="copyright">
-    Copyright © neutronest & Chiyuan Zhang 2012-2016 — Powered by Hexo
-</div>
 </body>
-</html>
 
+</html>
