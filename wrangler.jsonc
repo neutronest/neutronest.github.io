@@ -1,0 +1,7 @@
+{
+  "name": "astro-scholar",
+  "compatibility_date": "2026-07-25",
+  "assets": {
+    "directory": "./dist"
+  }
+}

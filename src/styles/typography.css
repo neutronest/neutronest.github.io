@@ -1,0 +1,97 @@
+:root {
+  --step--1: 0.875rem;
+  --step-0: 1rem;
+  --step-1: 1.125rem;
+  --step-2: 1.5rem;
+  --step-3: 1.875rem;
+  --step-4: 2.25rem;
+  --step-5: 3rem;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 450;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --tracking-tight: 0;
+  --leading-offset: 0.65rem;
+  --line-height-tight: 1.15;
+
+  --prose-foreground: color-mix(in oklab, var(--foreground) 80%, transparent);
+  --prose-marker: var(--primary);
+
+  --measure: 44rem;
+}
+
+*,
+::before,
+::after,
+::backdrop,
+::file-selector-button {
+  letter-spacing: var(--tracking-tight);
+}
+
+body {
+  font-family: var(--font-sans);
+  text-wrap: pretty;
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  text-wrap: balance;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: var(--underline, transparent);
+  text-decoration-thickness: max(1px, 0.0625em);
+  text-decoration-skip-ink: none;
+  text-underline-position: under;
+  text-underline-offset: -0.06em;
+  transition:
+    color var(--motion-duration-fast) var(--motion-ease),
+    text-decoration-color var(--motion-duration) var(--motion-ease);
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+prose-content {
+  display: block;
+  font-size: var(--step-0);
+  line-height: 1.75;
+  color: var(--foreground);
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+
+  &.prose-sm {
+    font-size: var(--step--1);
+  }
+
+  :where(
+      p,
+      ul,
+      ol,
+      blockquote,
+      pre,
+      table,
+      figure,
+      hr,
+      details,
+      math-display,
+      .expressive-code
+    ) {
+    margin-block: 0 1em;
+  }
+
+  > :first-child {
+    margin-block-start: 0;
+  }
+
+  > :last-child {
+    margin-block-end: 0;
+  }
+
+  :is(p, li) {
+    color: var(--prose-foreground);
+  }
+}
