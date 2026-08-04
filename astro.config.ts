@@ -15,7 +15,6 @@ import { normalizeHeadings } from "./src/plugins/satteri-normalize-headings"
 
 export default defineConfig({
   site: "https://neutronest.github.io",
-  base: "/neutronest",
   compressHTML: true,
   trailingSlash: "never",
   output: "static",
